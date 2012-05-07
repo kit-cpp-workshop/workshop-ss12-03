@@ -6,6 +6,8 @@
 lineto::lineto(bmp::AbsoluteCoordinate p)
 	: to( p )
 {}
+lineto::~lineto()
+{}
 
 bool lineto::apply(bmp::BatchBitmap24& p)
 {
