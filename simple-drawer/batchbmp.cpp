@@ -125,10 +125,15 @@ AbsoluteCoordinate::AbsoluteCoordinate(BatchBitmap24& p_ref)
 		return currentPos;
 	}
 
-	Pixel24 BatchBitmap24::getPixel(AbsoluteCoordinate p)
+	Color BatchBitmap24::getPixel(AbsoluteCoordinate p)
 	{
 		// TODO: check on origin of p?
 		return Bitmap24::getPixel( p.getX(), p.getY() );
+	}
+	void BatchBitmap24::setPixel(AbsoluteCoordinate p, Color c)
+	{
+		// TODO: check on origin of p?
+		Bitmap24::setPixel( p.getX(), p.getY(), c );
 	}
 
 	Color BatchBitmap24::getCurrentColor()

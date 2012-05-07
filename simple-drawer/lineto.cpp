@@ -33,7 +33,7 @@ bool lineto::apply(bmp::BatchBitmap24& p)
 
 		bmp::AbsoluteCoordinate currPxAbs = currPxRel.convert(p);
 
-		p.getPixel(currPxAbs).setColor( p.getCurrentColor() );
+		p.setPixel(currPxAbs, p.getCurrentColor());
 	}
 
 	return true;

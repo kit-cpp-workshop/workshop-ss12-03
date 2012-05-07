@@ -11,6 +11,22 @@ namespace bmp
 	//unsigned int const Bitmap24::bytesPerPixel;
 
 
+	// the Pixel24 is an accessor only!
+	struct Pixel24
+	{
+	public:
+		uint8_t& red;
+		uint8_t& green;
+		uint8_t& blue;
+
+		void setColor(Color c);
+		Color getColor();
+
+	private:
+		friend class Bitmap24;
+		Pixel24(byte* p_bitmap);
+	};
+
 	// NOTE: yes, it's reversed..
 	Pixel24::Pixel24(byte* p_bitmap)
 		: red  ( static_cast<uint8_t&>(*(p_bitmap + 2)) )
@@ -77,7 +93,7 @@ namespace bmp
 	}
 
 
-	Pixel24 Bitmap24::getPixel(unsigned int x, unsigned int y)
+	Color Bitmap24::getPixel(unsigned int x, unsigned int y)
 	{
 		if(!bitmap)
 		{
@@ -94,7 +110,27 @@ namespace bmp
 			// consider alignment
 			unsigned int index = y * rowSize + x * bytesPerPixel;
 
-			return Pixel24(bitmap + index);
+			return Pixel24(bitmap + index).getColor();
+		}
+	}
+	void Bitmap24::setPixel(unsigned int x, unsigned int y, Color c)
+	{
+		if(!bitmap)
+		{
+			// what now?
+			throw 42;
+		}else
+		{
+			if(x >= width || y >= height)
+			{
+				// what now?
+				throw 42;
+			}
+
+			// consider alignment
+			unsigned int index = y * rowSize + x * bytesPerPixel;
+
+			Pixel24(bitmap + index).setColor(c);
 		}
 	}
 

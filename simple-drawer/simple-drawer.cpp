@@ -14,8 +14,7 @@ int main()
 	{
 		for(unsigned int iColumn = 0; iColumn < blackBitmap.getWidth(); ++iColumn)
 		{
-			bmp::Pixel24 px = blackBitmap.Bitmap24::getPixel(iColumn, iRow);
-			px.setColor(blue);
+			blackBitmap.Bitmap24::setPixel(iColumn, iRow, blue);
 		}
 	}
 

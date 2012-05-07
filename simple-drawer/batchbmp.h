@@ -102,7 +102,8 @@ namespace bmp
 		void setCurrentPosAbs(AbsoluteCoordinate p);
 		AbsoluteCoordinate getCurrentPosAbs();
 
-		Pixel24 getPixel(AbsoluteCoordinate p);
+		Color getPixel(AbsoluteCoordinate p);
+		void setPixel(AbsoluteCoordinate p, Color c);
 
 		Color getCurrentColor();
 		void setCurrentColor(Color c);

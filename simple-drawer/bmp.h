@@ -26,23 +26,6 @@ std::istream& operator >>(std::istream& p_o, bmp::RelativeCoordinate& p_c);
 
 namespace bmp
 {
-	// the Pixel24 is an accessor only!
-	struct Pixel24
-	{
-	public:
-		uint8_t& red;
-		uint8_t& green;
-		uint8_t& blue;
-
-		void setColor(Color c);
-		Color getColor();
-
-	private:
-		friend class Bitmap24;
-		Pixel24(byte* p_bitmap);
-	};
-
-
 	class Bitmap24	// 24 bits per pixel
 	{
 	public:
@@ -57,7 +40,8 @@ namespace bmp
 		unsigned int getWidth();
 		unsigned int getHeight();
 
-		Pixel24 getPixel(unsigned int x, unsigned int y);
+		Color getPixel(unsigned int x, unsigned int y);
+		void setPixel(unsigned int x, unsigned int y, Color c);
 
 		void save(std::string name);
 
