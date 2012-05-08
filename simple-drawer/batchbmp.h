@@ -75,11 +75,11 @@ namespace bmp
 
 	struct Color
 	{
-		uint8_t red;
-		uint8_t green;
-		uint8_t blue;
+		byte red;
+		byte green;
+		byte blue;
 
-		Color(uint8_t p_red, uint8_t p_green, uint8_t p_blue)
+		Color(byte p_red, byte p_green, byte p_blue)
 			: red(p_red)
 			, green(p_green)
 			, blue(p_blue)

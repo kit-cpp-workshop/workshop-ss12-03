@@ -20,10 +20,10 @@ std::ostream& operator <<(std::ostream& p_os, bmp::BITMAPINFOHEADER const& p);
 namespace bmp
 {
 	typedef char byte;
-	typedef typename least<  signed, 16>::type     int_least16_t;
-	typedef typename least<unsigned, 16>::type    uint_least16_t;
-	typedef typename least<  signed, 32>::type     int_least32_t;
-	typedef typename least<unsigned, 32>::type    uint_least32_t;
+	typedef least<  signed, 16>::type     int_least16_t;
+	typedef least<unsigned, 16>::type    uint_least16_t;
+	typedef least<  signed, 32>::type     int_least32_t;
+	typedef least<unsigned, 32>::type    uint_least32_t;
 
 	bool isBigEndian();
 
