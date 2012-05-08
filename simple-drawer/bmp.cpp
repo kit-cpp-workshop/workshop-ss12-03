@@ -15,9 +15,9 @@ namespace bmp
 	struct Pixel24
 	{
 	public:
-		uint8_t& red;
-		uint8_t& green;
-		uint8_t& blue;
+		byte& red;
+		byte& green;
+		byte& blue;
 
 		void setColor(Color c);
 		Color getColor();
@@ -29,9 +29,9 @@ namespace bmp
 
 	// NOTE: yes, it's reversed..
 	Pixel24::Pixel24(byte* p_bitmap)
-		: red  ( static_cast<uint8_t&>(*(p_bitmap + 2)) )
-		, green( static_cast<uint8_t&>(*(p_bitmap + 1)) )
-		, blue ( static_cast<uint8_t&>(*(p_bitmap + 0)) )
+		: red  ( *(p_bitmap + 2) )
+		, green( *(p_bitmap + 1) )
+		, blue ( *(p_bitmap + 0) )
 	{}
 
 	void Pixel24::setColor(Color c)
