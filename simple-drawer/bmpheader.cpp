@@ -8,14 +8,14 @@ namespace bmp
 	{
 		assert(1 == sizeof(char));
 
-		int_least16_t value = 1;
+		uint_least32_t value = 1;
 		unsigned char* firstByte = reinterpret_cast<unsigned char*>( &value );
 		unsigned char test = 1;
 
 		bool ret = (*firstByte == test);
 		if(!ret)
 		{//- it's now big-endian
-			// assert it's little-endian
+			//! assert it's little-endian
 			unsigned char* lastByte = firstByte + sizeof(value);
 			if(*lastByte != test)
 			{//- it's not little-endian, too -----
@@ -69,56 +69,46 @@ namespace bmp
 		return;
 	}
 
+	// scalar version
+	template < typename _T >
+	byte* insertAsBigEndian(byte* where, std::size_t howManyBytes, _T const what)
+	{
+		convert2BigEndian
+		(
+			where, howManyBytes,
+			reinterpret_cast < byte const* >(&what), sizeof(what)
+		);
+
+		return where + howManyBytes;
+	}
+	// array version
+	template < typename _T, std::size_t _arrayCount >
+	byte* insertAsBigEndian(byte* where, std::size_t howManyBytesPerElement, _T const (&what)[_arrayCount])
+	{
+		for(std::size_t i = 0; i < _arrayCount; ++i)
+		{
+			where = insertAsBigEndian(where, howManyBytesPerElement, what[i]);
+		}
+
+		return where;
+	}
+
 
 	std::ostream& operator <<(std::ostream& p_os, BitmapHeader const& p)
 	{
 		byte data[14];
 		byte* pData = data;
 
-		//+ headerField
-			std::copy( p.headerField, p.headerField + 2, pData );
-			pData += sizeof(p.headerField);
-		//- headerField
 
-		//+ fileSize
-			std::size_t count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >(&p.fileSize), sizeof(p.fileSize)
-			);
-			pData += count;
-		//- fileSize
+		pData = insertAsBigEndian(pData, 1, p.headerField);
 
-		//+ reserved0
-			count = sizeof(p.reserved0);
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >(p.reserved0), sizeof(p.reserved0)
-			);
-			pData += count;
-		//- reserved0
+		pData = insertAsBigEndian(pData, 4, p.fileSize);
 
-		//+ reserved1
-			count = sizeof(p.reserved1);
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >(p.reserved1), sizeof(p.reserved1)
-			);
-			pData += count;
-		//- reserved1
+		pData = insertAsBigEndian(pData, 1, p.reserved0);
+		pData = insertAsBigEndian(pData, 1, p.reserved1);
 
-		//+ dataOffset
-			count = sizeof(p.dataOffset);
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >(&p.dataOffset), sizeof(p.dataOffset)
-			);
-			pData += count;
-		//- dataOffset
+		pData = insertAsBigEndian(pData, 4, p.dataOffset);
+
 
 		assert(data + sizeof(data) == pData);
 
@@ -135,116 +125,27 @@ namespace bmp
 		byte data[BITMAPINFOHEADER_SIZE];
 		byte* pData = data;
 
-		std::size_t count = 0;
 
-		//+ BITMAPINFOHEADER_SIZE
-			count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &BITMAPINFOHEADER_SIZE ), sizeof(BITMAPINFOHEADER_SIZE)
-			);
-			pData += count;
-		//- BITMAPINFOHEADER_SIZE
+		pData = insertAsBigEndian(pData, 4, BITMAPINFOHEADER_SIZE);
 
-		//+ width
-			count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &p.width ), sizeof(p.width)
-			);
-			pData += count;
-		//- width
-		//+ height
-			count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &p.height ), sizeof(p.height)
-			);
-			pData += count;
-		//- height
+		pData = insertAsBigEndian(pData, 4, p.width);
+		pData = insertAsBigEndian(pData, 4, p.height);
 
-		//+ color planes
-			static uint_least16_t const COLOR_PLANES = 1;
+		static uint_least16_t const COLOR_PLANES = 1;
+		pData = insertAsBigEndian(pData, 2, COLOR_PLANES);
 
-			count = 2;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &COLOR_PLANES ), sizeof(COLOR_PLANES)
-			);
-			pData += count;
-		//- color planes
+		pData = insertAsBigEndian(pData, 2, p.bitsPP);
 
-		//+ bitsPP
-			count = 2;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &p.bitsPP ), sizeof(p.bitsPP)
-			);
-			pData += count;
-		//- bitsPP
+		pData = insertAsBigEndian(pData, 4, p.compressionType);
 
-		//+ compressionType
-			count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &p.compressionType ), sizeof(p.compressionType)
-			);
-			pData += count;
-		//- compressionType
+		pData = insertAsBigEndian(pData, 4, p.bmpDataSize);
 
-		//+ bmpDataSize
-			count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &p.bmpDataSize ), sizeof(p.bmpDataSize)
-			);
-			pData += count;
-		//- bmpDataSize
+		pData = insertAsBigEndian(pData, 4, p.hres);
+		pData = insertAsBigEndian(pData, 4, p.vres);
 
-		//+ hres
-			count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &p.hres ), sizeof(p.hres)
-			);
-			pData += count;
-		//- hres
-		//+ vres
-			count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &p.vres ), sizeof(p.vres)
-			);
-			pData += count;
-		//- vres
+		pData = insertAsBigEndian(pData, 4, p.nColors);
+		pData = insertAsBigEndian(pData, 4, p.nImportantColors);
 
-		//+ nColors
-			count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &p.nColors ), sizeof(p.nColors)
-			);
-			pData += count;
-		//- nColors
-		//+ nImportantColors
-			count = 4;
-			convert2BigEndian
-			(
-				pData, count,
-				reinterpret_cast < byte const* >( &p.nImportantColors ), sizeof(p.nImportantColors)
-			);
-			pData += count;
-		//- nImportantColors
 
 		assert(data + sizeof(data) == pData);
 
