@@ -96,7 +96,7 @@ namespace bmp
 
 	std::ostream& operator <<(std::ostream& p_os, BitmapHeader const& p)
 	{
-		byte data[14];
+		byte data[p.SIZE];
 		byte* pData = data;
 
 
@@ -121,12 +121,11 @@ namespace bmp
 
 	std::ostream& operator <<(std::ostream& p_os, BITMAPINFOHEADER const& p)
 	{
-		static uint_least32_t const BITMAPINFOHEADER_SIZE = 40;
-		byte data[BITMAPINFOHEADER_SIZE];
+		byte data[p.SIZE];
 		byte* pData = data;
 
 
-		pData = insertAsBigEndian(pData, 4, BITMAPINFOHEADER_SIZE);
+		pData = insertAsBigEndian(pData, 4, p.SIZE);
 
 		pData = insertAsBigEndian(pData, 4, p.width);
 		pData = insertAsBigEndian(pData, 4, p.height);

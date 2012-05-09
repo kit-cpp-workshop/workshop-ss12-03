@@ -1,6 +1,7 @@
 #include <ostream>
 #include <cassert>
 #include <cstring>	// for memcpy
+#include <cstddef>
 
 #include "least-types.h"
 using namespace least_types;
@@ -32,27 +33,36 @@ namespace bmp
 
 	struct BitmapHeader
 	{
-		byte headerField[2];	// offset 0
-		uint_least32_t fileSize;	// offset 2
-		byte reserved0[2];	// offset 6
-		byte reserved1[2];	// offset 8
-		uint_least32_t dataOffset;	// offset 10
+		static std::size_t const SIZE = 14;
+
+
+		byte headerField[2];
+		uint_least32_t fileSize;
+		byte reserved0[2];
+		byte reserved1[2];
+		uint_least32_t dataOffset;
+
 
 		friend std::ostream& operator <<(std::ostream& p_os, BitmapHeader const& p);
 	};
 
-	enum BitmapCompression
-	{
-		BI_RGB = 0,
-		BI_RLE8,
-		BI_RLE4,
-		BI_BITFIELDS, //Also Huffman 1D compression for BITMAPCOREHEADER2
-		BI_JPEG,      //Also RLE-24 compression for BITMAPCOREHEADER2
-		BI_PNG,
-	};
 
 	struct BITMAPINFOHEADER
 	{
+		static std::size_t const SIZE = 40;
+
+
+		enum BitmapCompression
+		{
+			BI_RGB = 0,
+			BI_RLE8,
+			BI_RLE4,
+			BI_BITFIELDS, //Also Huffman 1D compression for BITMAPCOREHEADER2
+			BI_JPEG,      //Also RLE-24 compression for BITMAPCOREHEADER2
+			BI_PNG,
+		};
+
+
 		int_least32_t width;
 		int_least32_t height;
 		uint_least16_t bitsPP;

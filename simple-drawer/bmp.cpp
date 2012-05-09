@@ -152,7 +152,7 @@ namespace bmp
 		{
 			0, 0,   // width, height
 			24,     // bits per pixel
-			BI_RGB, // compression type
+			BITMAPINFOHEADER::BI_RGB, // compression type
 			0,      // bmpDataSize
 			90, 90, // hres, vres
 			0, 0    // nColors, nImportantColors
@@ -165,9 +165,8 @@ namespace bmp
 		specificBitmapHeader.height = height;
 
 		BitmapHeader specificHeader = DEFAULT_HEADER;
-		// 14 == size of header, 40 == size of bitmap info header
-		specificHeader.fileSize = 14 + 40 + specificBitmapHeader.bmpDataSize;
-		specificHeader.dataOffset = 14 + 40;
+		specificHeader.dataOffset = BitmapHeader::SIZE + BITMAPINFOHEADER::SIZE;
+		specificHeader.fileSize = specificHeader.dataOffset + specificBitmapHeader.bmpDataSize;
 
 		out << specificHeader;
 		out << specificBitmapHeader;
