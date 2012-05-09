@@ -8,11 +8,31 @@ namespace bmp
 	{
 		assert(1 == sizeof(char));
 
-		unsigned short value = 1;
+		int_least16_t value = 1;
 		unsigned char* firstByte = reinterpret_cast<unsigned char*>( &value );
 		unsigned char test = 1;
 
-		return (*firstByte == test);
+		bool ret = (*firstByte == test);
+		if(!ret)
+		{//- it's now big-endian
+			// assert it's little-endian
+			unsigned char* lastByte = firstByte + sizeof(value);
+			if(*lastByte != test)
+			{//- it's not little-endian, too -----
+				goto hell;
+			}
+
+			if(false)
+			{
+				hell:
+				assert(false & !((char const* const)"Your machine is neither big-endian nor little-endian. Not supported!"));
+
+				class DeadKitten {} up;
+				throw up;
+			}
+		}
+
+		return ret;
 	}
 
 	void convert2BigEndian(byte* dst, std::size_t dstCount,
@@ -31,7 +51,7 @@ namespace bmp
 		}else
 		{
 			assert(0 == dstCount % 2);
-			assert(0 != srcCount % 2);
+			assert(0 == srcCount % 2);
 
 			for(std::size_t i = 0;
 				i < std::min(dstCount, srcCount);
