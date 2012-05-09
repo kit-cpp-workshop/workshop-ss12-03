@@ -4,9 +4,9 @@
 
 namespace bmp
 {
-	bool isBigEndian()
+	bool isLittleEndian()
 	{
-		assert(1 == sizeof(char));
+		assert(1 == sizeof(unsigned char));
 
 		uint_least32_t value = 1;
 		unsigned char* firstByte = reinterpret_cast<unsigned char*>( &value );
@@ -14,18 +14,18 @@ namespace bmp
 
 		bool ret = (*firstByte == test);
 		if(!ret)
-		{//- it's now big-endian
-			//! assert it's little-endian
+		{//- it's not little-endian
+			//! assert it's big-endian
 			unsigned char* lastByte = firstByte + sizeof(value);
 			if(*lastByte != test)
-			{//- it's not little-endian, too -----
+			{//- it's not big-endian, too -----
 				goto hell;
 			}
 
 			if(false)
 			{
 				hell:
-				assert(false & !((char const* const)"Your machine is neither big-endian nor little-endian. Not supported!"));
+				assert(false & !((char const* const)"Your machine is neither little-endian nor big-endian. Not supported!"));
 
 				class DeadKitten {} up;
 				throw up;
@@ -38,9 +38,9 @@ namespace bmp
 	void convert2BigEndian(byte* dst, std::size_t dstCount,
 	                       byte const* src, std::size_t srcCount)
 	{
-		static bool const IS_BIG_ENDIAN = isBigEndian();
+		static bool const IS_LITTLE_ENDIAN = isLittleEndian();
 
-		if(IS_BIG_ENDIAN)
+		if(IS_LITTLE_ENDIAN)
 		{
 			memcpy
 			(
