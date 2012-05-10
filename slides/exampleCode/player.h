@@ -1,9 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+
 #include <list>
 
 class Item; // "forward declaration"
+
 
 class Player {
 public:
@@ -16,5 +18,6 @@ public:
 private:
     std::list<Item*> inventory;
 };
+
 
 #endif

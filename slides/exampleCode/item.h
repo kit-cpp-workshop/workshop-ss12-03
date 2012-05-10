@@ -1,10 +1,11 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "player.h"
 
-#include <iostream>
 #include <string>
+
+class Player;
+
 
 class Item {
 public:
@@ -40,5 +41,6 @@ public:
     SpeedPotion();
     virtual bool invoke();
 };
+
 
 #endif

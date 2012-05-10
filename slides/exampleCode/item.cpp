@@ -1,6 +1,9 @@
 #include "item.h"
 #include "player.h"
 
+#include <iostream>
+
+
 Item::Item(std::string theName) : name(theName) { }
 
 Item::~Item() {

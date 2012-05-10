@@ -1,7 +1,6 @@
 #include "player.h"
 #include "item.h"
 
-#include <string>
 #include <iostream>
 
 Player::Player() { }
