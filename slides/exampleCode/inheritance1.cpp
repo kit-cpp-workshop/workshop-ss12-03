@@ -36,9 +36,9 @@ public:
         // ...
     };
     // a purely virtual method
-    virtual float getWeight();
+    virtual float getWeight() = 0;
     // a non-virtual method
-    const std::string getName() const {
+    std::string getName() const {
         return name;
     };
 
@@ -70,6 +70,9 @@ public:
             return true;
         }
         return false;
+    };
+    virtual float getWeight() {
+        return 20;
     };
 protected:
     bool destroyedOnInvocation;
