@@ -32,6 +32,17 @@ public:
     };
 };
 
+Beispiel() {
+    ParentClass* object1 = new ParentClass();
+    /// Dies ruft nun theFunction() in ParentClass auf:
+    object1->theFunction();
+    
+    ParentClass* object2 = new ChildClass();
+    /// "In Wirklichkeit" ist object2 vom Typ childClass, deshalb
+    /// ruft dies theFunction() in ChildClass auf!
+    object2->theFunction();
+};
+
 }
 
 namespace Slide3 {
@@ -73,7 +84,7 @@ ParentClass* base = new ParentClass();
 ChildClass* baseAsChild = dynamic_cast<ChildClass*>(base);
 /// Hier ist nun baseAsChild einfach "0".
 
-ParentClass* base = ChildClass();
+ParentClass* base = new ChildClass();
 ChildClass* baseAsChild = dynamic_cast<ChildClass*>(base);
 /// Hier ist baseAsChild eine gültige Instanz von ChildClass.
 
