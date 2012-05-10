@@ -21,6 +21,8 @@ namespace bmp
 		byte red;
 		byte green;
 		byte blue;
+
+		bool equals(Color24 p);
 	};
 
 

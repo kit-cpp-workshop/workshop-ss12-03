@@ -7,6 +7,12 @@
 
 namespace bmp
 {
+	bool Color24::equals(Color24 p)
+	{
+		return (red == p.red && green == p.green && blue == p.blue);
+	}
+
+
 	// WTF?
 	//unsigned int const Bitmap24::bytesPerPixel;
 
