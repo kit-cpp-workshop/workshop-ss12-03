@@ -11,7 +11,8 @@ namespace bmp
 	//unsigned int const Bitmap24::bytesPerPixel;
 
 
-	// the Pixel24 is an accessor only!
+	// The Pixel24 struct is an internal accessor only to map the byte-array of Bitmap24
+	// to the Color24 aggregate
 	struct Pixel24
 	{
 	public:
@@ -19,8 +20,8 @@ namespace bmp
 		byte& green;
 		byte& blue;
 
-		void setColor(Color c);
-		Color getColor();
+		void setColor(Color24 c);
+		Color24 getColor();
 
 	private:
 		friend class Bitmap24;
@@ -34,36 +35,24 @@ namespace bmp
 		, blue ( *(p_bitmap + 0) )
 	{}
 
-	void Pixel24::setColor(Color c)
+	void Pixel24::setColor(Color24 c)
 	{
 		red = c.red;
 		green = c.green;
 		blue = c.blue;
 	}
-	Color Pixel24::getColor()
+	Color24 Pixel24::getColor()
 	{
-		return Color(red, green, blue);
+		Color24 ret = {red, green, blue};
+		return ret;
 	}
 
 
 
 
-	Bitmap24::Bitmap24()
+	Bitmap24::Bitmap24(unsigned int p_width, unsigned int p_height)
 		: bitmap(0)
-	{}
-
-	Bitmap24::~Bitmap24()
 	{
-		delete[] bitmap;
-	}
-
-	bool Bitmap24::create(unsigned int p_width, unsigned int p_height)
-	{
-		if(bitmap)
-		{
-			return false;
-		}
-		
 		// consider alignment of rows at 4-byte boundary
 		// NOTE: we round up here
 		unsigned int const rowSizeTemp = ((bytesPerPixel * p_width + (4-1)) / 4) * 4;
@@ -78,8 +67,11 @@ namespace bmp
 
 			rowSize = rowSizeTemp;
 		//- exception-safe part
+	}
 
-		return true;
+	Bitmap24::~Bitmap24()
+	{
+		delete[] bitmap;
 	}
 
 
@@ -93,48 +85,51 @@ namespace bmp
 	}
 
 
-	Color Bitmap24::getPixel(unsigned int x, unsigned int y)
+	bool Bitmap24::getIndex(unsigned int p_x, unsigned int p_y, unsigned int& p_index)
 	{
-		if(!bitmap)
+		if(p_x >= width || p_y >= height)
 		{
-			// what now?
-			throw 42;
-		}else
-		{
-			if(x >= width || y >= height)
-			{
-				// what now?
-				throw 42;
-			}
-
-			// consider alignment
-			unsigned int index = y * rowSize + x * bytesPerPixel;
-
-			return Pixel24(bitmap + index).getColor();
+			return false;
 		}
-	}
-	void Bitmap24::setPixel(unsigned int x, unsigned int y, Color c)
-	{
-		if(!bitmap)
-		{
-			// what now?
-			throw 42;
-		}else
-		{
-			if(x >= width || y >= height)
-			{
-				// what now?
-				throw 42;
-			}
 
-			// consider alignment
-			unsigned int index = y * rowSize + x * bytesPerPixel;
+		// consider alignment
+		unsigned int index = p_y * rowSize + p_x * bytesPerPixel;
+		p_index = index;
 
-			Pixel24(bitmap + index).setColor(c);
-		}
+		return true;
 	}
 
+	bool Bitmap24::getPixel(unsigned int p_x, unsigned int p_y, Color24& p_c)
+	{
+		unsigned int index = 0;
+		if(!getIndex(p_x, p_y, index))
+		{
+			return false;
+		}else
+		{
+			Pixel24 px( bitmap + index );
+			p_c = px.getColor();
 
+			return true;
+		}
+	}
+	bool Bitmap24::setPixel(unsigned int p_x, unsigned int p_y, Color24 p_c)
+	{
+		unsigned int index = 0;
+		if(!getIndex(p_x, p_y, index))
+		{
+			return false;
+		}else
+		{
+			Pixel24 px( bitmap + index );
+			px.setColor(p_c);
+
+			return true;
+		}
+	}
+
+
+	// magic for saving the bitmap, don't care
 	void Bitmap24::save(std::string name)
 	{
 		std::ofstream out
@@ -145,6 +140,7 @@ namespace bmp
 		if(!out.is_open() || !out)
 		{
 			// what now?
+			throw 42;
 		}
 
 

@@ -7,16 +7,6 @@
 using namespace least_types;
 
 
-namespace bmp
-{
-	struct BitmapHeader;
-	struct BITMAPINFOHEADER;
-}
-
-std::ostream& operator <<(std::ostream& p_os, bmp::BitmapHeader const& p);
-std::ostream& operator <<(std::ostream& p_os, bmp::BITMAPINFOHEADER const& p);
-
-
 // source: http://en.wikipedia.org/wiki/BMP_file_format
 namespace bmp
 {
@@ -25,6 +15,7 @@ namespace bmp
 	typedef least<unsigned, 16>::type    uint_least16_t;
 	typedef least<  signed, 32>::type     int_least32_t;
 	typedef least<unsigned, 32>::type    uint_least32_t;
+
 
 	bool isBigEndian();
 

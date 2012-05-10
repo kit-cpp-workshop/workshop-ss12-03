@@ -94,7 +94,9 @@ namespace bmp
 	}
 
 
-	std::ostream& operator <<(std::ostream& p_os, BitmapHeader const& p)
+
+
+	std::ostream& operator <<(std::ostream& p_os, bmp::BitmapHeader const& p)
 	{
 		byte data[p.SIZE];
 		byte* pData = data;
@@ -119,7 +121,7 @@ namespace bmp
 	}
 
 
-	std::ostream& operator <<(std::ostream& p_os, BITMAPINFOHEADER const& p)
+	std::ostream& operator <<(std::ostream& p_os, bmp::BITMAPINFOHEADER const& p)
 	{
 		byte data[p.SIZE];
 		byte* pData = data;

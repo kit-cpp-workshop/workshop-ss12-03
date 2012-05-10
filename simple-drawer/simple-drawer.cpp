@@ -4,17 +4,15 @@
 
 int main()
 {
-	bmp::BatchBitmap24 blackBitmap;
+	bmp::BatchBitmap24 blackBitmap(10, 10);
 
-	blackBitmap.create(10, 10);
-
-	bmp::Color blue(0, 0, 255);
+	bmp::Color24 blue = {0, 0, 255};
 
 	for(unsigned int iRow = 0; iRow < blackBitmap.getHeight(); ++iRow)
 	{
 		for(unsigned int iColumn = 0; iColumn < blackBitmap.getWidth(); ++iColumn)
 		{
-			blackBitmap.Bitmap24::setPixel(iColumn, iRow, blue);
+			blackBitmap.setPixel(iColumn, iRow, blue);
 		}
 	}
 

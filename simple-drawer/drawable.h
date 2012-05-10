@@ -5,8 +5,7 @@ namespace bmp
 	class Drawable
 	{
 	public:
-		virtual ~Drawable()
-		{}
+		virtual ~Drawable() {}
 
 		virtual bool apply(BatchBitmap24&) = 0;
 	};

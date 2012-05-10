@@ -11,7 +11,7 @@ lineto::~lineto()
 
 bool lineto::apply(bmp::BatchBitmap24& p)
 {
-	bmp::RelativeCoordinate curr = p.getCurrentPos();
+	bmp::RelativeCoordinate curr = p.getCurrentPos().convert();
 	bmp::RelativeCoordinate end = to.convert();
 		
 	double dirX = end.getX() - curr.getX();
@@ -25,7 +25,8 @@ bool lineto::apply(bmp::BatchBitmap24& p)
 	// well, err, this is no good??
 	for(double step = 0; step <= length; step += 0.05)
 	{
-		bmp::RelativeCoordinate currPxRel
+		bmp::RelativeCoordinate currPxRel;
+		currPxRel.set
 		(
 			curr.getX() + dirX * step,
 			curr.getY() + dirY * step

@@ -1,14 +1,38 @@
 #include "batchbmp.h"
+#include <cassert>
+
+
+// magic, don't care
+std::istream& operator >>(std::istream& p_i, bmp::RelativeCoordinate p_c)
+{
+	double x = 0;
+	double y = 0;
+	p_i >> x;
+	p_i >> y;
+
+	if(p_i.good())
+	{
+		bmp::RelativeCoordinate temp;
+		temp.set(x, y);
+
+		std::swap(p_c, temp);
+	}
+
+	return p_i;
+}
+
 
 namespace bmp
 {
-AbsoluteCoordinate::AbsoluteCoordinate(BatchBitmap24& p_ref)
-		: refBitmap(p_ref)
+	AbsoluteCoordinate::AbsoluteCoordinate(Bitmap24& p_ref)
+		: refBitmap(&p_ref)
+		, x( 0 )
+		, y( 0 )
 	{}
 
 	bool AbsoluteCoordinate::set(unsigned int p_x, unsigned int p_y)
 	{
-		if(p_x > refBitmap.getWidth() || p_y > refBitmap.getHeight())
+		if(p_x > refBitmap->getWidth() || p_y > refBitmap->getHeight())
 		{
 			return false;
 		}else
@@ -31,39 +55,31 @@ AbsoluteCoordinate::AbsoluteCoordinate(BatchBitmap24& p_ref)
 
 	RelativeCoordinate AbsoluteCoordinate::convert()
 	{
-		return RelativeCoordinate
+		RelativeCoordinate ret;
+
+		bool error = ret.set
 		(
-			static_cast<double>(x) / refBitmap.getWidth(),
-			static_cast<double>(y) / refBitmap.getHeight()
+			static_cast<double>(x) / refBitmap->getWidth(),
+			static_cast<double>(y) / refBitmap->getHeight()
 		);
-	}
 
-	AbsoluteCoordinate& AbsoluteCoordinate::operator =(AbsoluteCoordinate p)
-	{
-		/*if(static_cast<Bitmap24&>(p.refBitmap) != static_cast<Bitmap24&>(refBitmap))
-		{
-			// what now?
-			throw 42;
-		}*/
+		assert(!error);
 
-		x = p.x;
-		y = p.y;
-
-		return *this;
+		return ret;
 	}
 
 
 
 
-	RelativeCoordinate::RelativeCoordinate(double p_x, double p_y)
-		: x( p_x )
-		, y( p_y )
+	RelativeCoordinate::RelativeCoordinate()
+		: x( 0 )
+		, y( 0 )
 	{}
 
 	bool RelativeCoordinate::set(double p_x, double p_y)
 	{
 		if(   1 < p_x || 0 > p_x
-			|| 1 < p_y || 0 > p_y)
+		   || 1 < p_y || 0 > p_y)
 		{
 			return false;
 		}else
@@ -99,48 +115,53 @@ AbsoluteCoordinate::AbsoluteCoordinate(BatchBitmap24& p_ref)
 
 
 
-	BatchBitmap24::BatchBitmap24()
-		: currentPos( *this )
-		, currentColor( 0, 0, 0 )
+	BatchBitmap24::BatchBitmap24(unsigned int p_width, unsigned int p_height)
+		: Bitmap24( p_width, p_height )
+		, currentPos( *this )
+		, currentColor()	// believe it or not, this value-initializes the color elements to 0
 	{
 		currentPos.set(0, 0);
 	}
 	BatchBitmap24::~BatchBitmap24()
 	{}
 
-	void BatchBitmap24::setCurrentPos(RelativeCoordinate p)
-	{
-		currentPos = p.convert(*this);
-	}
-	RelativeCoordinate BatchBitmap24::getCurrentPos()
-	{
-		return currentPos.convert();
-	}
-	void BatchBitmap24::setCurrentPosAbs(AbsoluteCoordinate p)
+	void BatchBitmap24::setCurrentPos(AbsoluteCoordinate p)
 	{
 		currentPos = p;
 	}
-	AbsoluteCoordinate BatchBitmap24::getCurrentPosAbs()
+	AbsoluteCoordinate BatchBitmap24::getCurrentPos()
 	{
 		return currentPos;
 	}
 
-	Color BatchBitmap24::getPixel(AbsoluteCoordinate p)
+	bool BatchBitmap24::getPixel(AbsoluteCoordinate p_coord, Color24& p_color)
 	{
-		// TODO: check on origin of p?
-		return Bitmap24::getPixel( p.getX(), p.getY() );
+		if(this != p_coord.refBitmap)
+		{
+			return false;
+		}else
+		{
+			// yes, it's checked twice, actually
+			return Bitmap24::getPixel( p_coord.getX(), p_coord.getY(), p_color );
+		}
 	}
-	void BatchBitmap24::setPixel(AbsoluteCoordinate p, Color c)
+	bool BatchBitmap24::setPixel(AbsoluteCoordinate p_coord, Color24 p_color)
 	{
-		// TODO: check on origin of p?
-		Bitmap24::setPixel( p.getX(), p.getY(), c );
+		if(this != p_coord.refBitmap)
+		{
+			return false;
+		}else
+		{
+			// yes, it's checked twice, actually
+			return Bitmap24::setPixel( p_coord.getX(), p_coord.getY(), p_color );
+		}
 	}
 
-	Color BatchBitmap24::getCurrentColor()
+	Color24 BatchBitmap24::getCurrentColor()
 	{
 		return currentColor;
 	}
-	void BatchBitmap24::setCurrentColor(Color c)
+	void BatchBitmap24::setCurrentColor(Color24 c)
 	{
 		currentColor = c;
 	}
