@@ -1,3 +1,6 @@
+#ifndef FILL_H
+#define FILL_H
+
 #include "drawable.h"
 #include "batchbmp.h"
 
@@ -35,3 +38,5 @@ namespace bmp
 
 	};
 }
+
+#endif

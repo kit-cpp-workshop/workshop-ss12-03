@@ -22,8 +22,8 @@ int main()
 	}*/
 
 	blackBitmap.setCurrentColor(blue);
-	/*bmp::fillp myBackground;
-	myBackground.applyTo(blackBitmap);*/
+	bmp::fillp myBackground;
+	myBackground.applyTo(blackBitmap);
 
 
 

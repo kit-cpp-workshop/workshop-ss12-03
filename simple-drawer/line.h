@@ -1,3 +1,6 @@
+#ifndef LINE_H
+#define LINE_H
+
 #include "drawable.h"
 #include "batchbmp.h"
 
@@ -40,3 +43,4 @@ namespace bmp
 		bmp::RelativeCoordinate to;
 	};
 }
+#endif

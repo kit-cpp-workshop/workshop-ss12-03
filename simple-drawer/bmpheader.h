@@ -1,3 +1,6 @@
+#ifndef BMPHEADER_H
+#define BMPHEADER_H
+
 #include <ostream>
 #include <cassert>
 #include <cstring>	// for memcpy
@@ -68,3 +71,5 @@ namespace bmp
 		friend std::ostream& operator <<(std::ostream& p_os, BITMAPINFOHEADER const& p);
 	};
 }
+
+#endif
