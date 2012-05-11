@@ -24,9 +24,7 @@ namespace bmp
 	};
 
 
-	// a class whose instances can draw lines to BatchBitmap24
-	// from the current position to another coordinate
-	// the current position of the bitmap is changed to the end position of the line
+	// a class whose instances can fill to BatchBitmap24
 	class fillp
 		: public IBatchDrawable
 	{
