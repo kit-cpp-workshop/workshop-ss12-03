@@ -33,22 +33,6 @@ int main()
 	blackBitmap.save("foo.bmp");
 
 
-	bmp::BatchBitmap24 testBitmap(12, 12);
-
-	bmp::AccessPosTest      test0;
-	bmp::AccessColorTest    test1;
-	bmp::AbsCoordCompatTest test2;
-	bmp::BatchBmpTest* myTests[] = { &test0, &test1, &test2 };
-
-	bool passed = bmp::performTests(testBitmap, myTests, sizeof(myTests)/sizeof(myTests[0]));
-	if(passed)
-	{
-		std::cout << "All tests passed." << std::endl;
-	}else
-	{
-		std::cout << "At least one test FAILED." << std::endl;
-	}
-
 	return 0;
 }
 
