@@ -16,7 +16,7 @@ Die Vortragsfolien stehen als [PDF](https://github.com/downloads/kit-cpp-worksho
 
 ###Screencast
 
-Ein Screencast des Vortrags wird nach dem Workshop an dieser Stelle verlinkt.
+Eine (vorläufige) Aufzeichnung des Vortrags steht zum [Download](http://ubuntuone.com/7jBAM5gcgtreAdcjuXllPd) bereit.
 
 ## Aufgaben
 
