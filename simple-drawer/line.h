@@ -4,7 +4,7 @@
 
 namespace bmp
 {
-	// never mind the following, it continues the black voodoo from drawable.h
+	// never mind the following comment, it continues the black voodoo from drawable.h
 	// when we would have introduced IDrawable, class line had to inherit from:
 	// public virtual IDrawable
 	// and would need a virtual dtor
