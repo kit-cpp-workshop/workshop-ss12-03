@@ -1,6 +1,5 @@
 #include "batchbmp.h"
 #include "line.h"
-#include "test.h"
 
 #include <iostream>
 
