@@ -13,33 +13,7 @@ namespace bmp
 		}
 
 
-		// NOTE: we use relative coordinates here for pure algorithmic reasons
-
-		bmp::RelativeCoordinate curr = p_from.convert();
-		bmp::RelativeCoordinate end = p_to.convert();
-
-		double dirX = end.getX() - curr.getX();
-		double dirY = end.getY() - curr.getY();
-
-		double length = std::sqrt(dirX*dirX + dirY*dirY);
-
-		dirX /= length;
-		dirY /= length;
-
-		// well, err, this is no good??
-		for(double step = 0; step <= length; step += 0.05)
-		{
-			bmp::RelativeCoordinate currPxRel;
-			currPxRel.set
-			(
-				curr.getX() + dirX * step,
-				curr.getY() + dirY * step
-			);
-
-			bmp::AbsoluteCoordinate currPxAbs = currPxRel.convert(p_target);
-
-			p_target.setPixel( currPxAbs.getX(), currPxAbs.getY(), p_color );
-		}
+		// please IMPLEMENT here!!
 
 
 		return true;
