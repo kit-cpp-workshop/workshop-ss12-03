@@ -25,7 +25,7 @@ namespace bmp
 			if(false)
 			{
 				hell:
-				assert(false && "Your machine is neither little-endian nor big-endian. Not supported!"));
+				assert(false && "Your machine is neither little-endian nor big-endian. Not supported!");
 
 				class DeadKitten {} up;
 				throw up;
