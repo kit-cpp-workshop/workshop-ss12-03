@@ -1,6 +1,6 @@
 #include "batchbmp.h"
 #include "line.h"
-#include "test.h"
+//#include "test.h"
 
 #include <iostream>
 
@@ -10,6 +10,7 @@ int main()
 	bmp::BatchBitmap24 blackBitmap(10, 10);
 
 	bmp::Color24 blue = {0, 0, 255};
+	bmp::Color24 red = {255,0,0};
 
 	for(unsigned int iRow = 0; iRow < blackBitmap.getHeight(); ++iRow)
 	{
@@ -19,18 +20,19 @@ int main()
 		}
 	}
 
-	bmp::AbsoluteCoordinate end(blackBitmap);
+	/*bmp::AbsoluteCoordinate end(blackBitmap);
 	if(!end.set(9, 5))
 	{
 		std::cout << "error!" << std::endl;
 	}else
 	{
+		blackBitmap.setCurrentColor(red);
 		bmp::lineto myLine( end.convert() );
 		myLine.applyTo(blackBitmap);
-	}
+	}*/
 
 
-	blackBitmap.save("foo.bmp");
+ 	blackBitmap.save("foo.bmp");
 
 
 	return 0;

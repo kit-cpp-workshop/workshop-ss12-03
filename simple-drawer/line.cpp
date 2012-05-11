@@ -12,6 +12,36 @@ namespace bmp
 			return false;
 		}
 
+		unsigned int startx=p_from.getX();
+		unsigned int starty=p_from.getY();
+		unsigned int endx=p_to.getX();
+		unsigned int endy=p_to.getY();
+
+		unsigned int currentx;
+		unsigned int currenty;
+
+
+		p_target.setPixel(startx, starty, p_color);
+		p_target.setPixel(endx, endy, p_color);
+
+		double winkel;
+		if (endx!=startx)
+		{
+			winkel=atan((endy-starty)/double(endx-startx));
+		}
+		else
+		{
+			winkel=2*std::atan(1); //Pi/2
+		}
+
+
+
+		for (int i=0;i<=ceil(sqrt((endy-starty)*(endy-starty)+(endx-startx)*(endx-startx)));i++)
+		{
+			currentx=round(startx+i*cos(winkel));
+			currenty=round(starty+i*sin(winkel));
+			p_target.setPixel(currentx, currenty, p_color);
+		}
 
 		// please IMPLEMENT here!!
 
