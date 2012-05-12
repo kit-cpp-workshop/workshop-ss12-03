@@ -1,6 +1,7 @@
 #include "line.h"
 
 #include <cmath>
+#include <iostream>
 
 
 namespace bmp
@@ -17,6 +18,10 @@ namespace bmp
 		unsigned int endx=p_to.getX();
 		unsigned int endy=p_to.getY();
 
+
+		std::cout << "From " << startx << ":" << starty << " to " << endx << ":" << endy <<std::endl;
+
+
 		unsigned int currentx;
 		unsigned int currenty;
 
@@ -27,8 +32,9 @@ namespace bmp
 		double winkel;
 		if (endx!=startx)
 		{
-			winkel=atan((endy-starty)/double(endx-startx));
+			winkel=atan((double(endy)-double(starty))/(double(endx)-double(startx)));
 		}
+
 		else
 		{
 			winkel=2*std::atan(1); //Pi/2
@@ -38,8 +44,24 @@ namespace bmp
 
 		for (int i=0;i<=ceil(sqrt((endy-starty)*(endy-starty)+(endx-startx)*(endx-startx)));i++)
 		{
-			currentx=round(startx+i*cos(winkel));
-			currenty=round(starty+i*sin(winkel));
+			if (endx>=startx)
+			{
+				currentx=round(startx+i*cos(winkel));
+			}
+			else
+			{
+				currentx=round(startx-i*cos(winkel));
+			}
+
+			if (endy>=starty)
+			{
+				currenty=round(starty+i*std::abs(sin(winkel)));
+			}
+			else
+			{
+				currenty=round(starty-i*std::abs(sin(winkel)));
+			}
+
 			p_target.setPixel(currentx, currenty, p_color);
 		}
 
