@@ -1,0 +1,143 @@
+\section{Das Bitmap-Framework}
+
+\subsection{Bitmap24 und Algorithmen}
+
+\begin{frame}[fragile]{Die Klasse Bitmap24}
+	Die Klasse \verb|Bitmap24| ist eine minimale Klasse zum Abspeichern von Bitmaps (.bmp). Sie enthält dafür die member function \verb|save|, der am einfachsten ein String-Literal als Parameter übergeben wird, etwa \verb|save("filename.bmp")|.
+	
+	\pause
+	
+	\begin{block}{Wie speichere ich eine Bitmap?}
+		Die Bilddaten (Pixel) müssen in den Puffer von \verb|Bitmap24| liegen, sie können dorthin mit \verb|setPixel| geschrieben werden. Anschließend speichert ein Aufruf der member function \verb|save| die Bitmap als Datei. Geläufige C++ Implementierungen werden diese Datei in das Arbeitsverzeichnis legen, etwa im Ordner der ausführbaren Datei. Ebenfalls bei den geläufigen Implementierungen kann man dem Dateinamen noch einen Pfad voranstellen.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Objektorientierung im Bitmap-Framework}
+	Das Bitmap-Framework legt den Wert auf die Interaktion von Instanzen (Objekten). Zum Zeichnen einer Line soll daher ein Linien-Objekt erstellt werden, welches dann mit einem \enquote{Leinwand}-Objekt interagiert.
+	
+	\pause
+	\vspace{1em}
+	
+	Damit die beiden Objekte miteinander interagieren können, brauchen sie sozusagen eine gemeinsame Sprache. Hier basiert diese auf der Verwendung von Pixeln: Die Linie weiß, wie sie in Pixeln aussieht, und die Leinwand stellt eine Möglichkeit zur Verfügung, pixelweise auf sie zu zeichnen.
+\end{frame}
+
+\begin{frame}[fragile]{Minimalimplementierung der Leinwand}
+	Wir werden später sehen, dass es eigentlich vorteilhaft ist, die gemeinsame Sprache zwischen Zeichenobjekten (Linie, Kreis usw.) und Leinwand abstrakt in Form eines Interface festzuhalten. Wir wollen jedoch zunächst unser Programm einfach halten und Abstraktion vermeiden.
+	
+	\pause
+	\vspace{1em}
+	
+	Die \verb|Bitmap24|-Klasse, die eigentlich zum Abspeichern einer Bitmap-Datei dient, reicht aus, um als Leinwand-Klasse verwendet werden zu können: Man kann pixelweise auf das hinterlegte Bitmap zugreifen, dies entspricht einem pixelweisen Zeichnen (\verb|setPixel|).
+\end{frame}
+
+\begin{frame}{Zeichen-Algorithmus}
+	Bevor man damit beginnt, eine Klasse für ein Zeichen-Objekt zu schreiben, sollte man eine Idee haben, wie das zu zeichnende Objekt in Pixeln aussieht. Man benötigt also eine Vorgehensweise, eine Menge von Pixeln zu \enquote{setzen} (den Farbwert zu setzen) $\implies$ ein Algorithmus.
+	
+	\pause
+	\vspace{1em}
+	
+	Der einfachste Fall hierfür ist der Algorithmus zum Füllen der gesamten Leinwand mit einer Farbe. Es muss hierbei lediglich jedem Pixel diese Farbe zugewiesen werden, der Algorithmus benötigt also als Eingabe eine Farbe sowie die Leinwand, auf der er agieren soll.
+\end{frame}
+
+\begin{frame}[fragile]{Implementierung eines Zeichen-Algorithmus (1)}
+	In unserem einfachen Programm können wir nun eine Funktion schreiben:
+	\begin{lstlisting}[language=C++]
+		void fillCanvas(Bitmap24& targetCanvas, Color fillColor);
+	\end{lstlisting}
+	
+	\vspace{1em}
+	Beachte: Wir müssen die Leinwand als Referenz übergeben, da der Algorithmus ja auf dem übergebenen »Ding« arbeiten soll, und nicht auf einer Kopie (= nicht auf einem neuen »Ding«).
+\end{frame}
+
+\begin{frame}[fragile]{Implementierung eines Zeichen-Algorithmus (2)}
+	Es stehen nun innerhalb der Funktion \verb|fillCanvas| die Eigenschaften und Fähigkeiten des \verb|Bitmap24| zur Verfügung, wir können also pixelweise die Bitmap schreiben und die Höhe sowie Breite abfragen. Da die Pixel bei $(0, 0)$ beginnen und die Leinwand bei $(\text{width}-1, \text{height}-1)$ zu Ende ist, sind alle nötigen Informationen für das Füllen der Leinwand vorhanden.
+\end{frame}
+
+
+\subsection{BatchBitmap24 und Zeichen-Objekte}
+
+\begin{frame}{Zeichen-Objekte}
+	Wir könnten basierend auf dem Algorithmus, der oben beispielhaft als Funktion designed wurde, bereits ein Objekt (eine Klasse) machen. So könnte dieses Objekt bspw. die Farbe als data member speichern und eine member function enthalten, die als Parameter nur noch die Leinwand annehmen muss. Was wäre der Vorteil davon?
+	
+	\pause
+	\vspace{1em}
+	
+	Z.B. könnte man ein solches Objekt im Voraus erzeugen, und anschließend auf eine Reihe von Leinwänden anwenden. So könnte man etwa ein Zeichenobjekt pro Grundfarbe anlegen. Aber richtig groß ist der Vorteil noch nicht, das ändert sich aber mit ein paar mehr Schritten.
+\end{frame}
+
+\begin{frame}{Klassifizierung}
+	Wenn ich die Menge von Klassen für Zeichenobjekte betrachte, so fallen mir zwei Punkte auf:
+	\begin{itemize}
+		\item Die Zeichenobjekte entsprechen ungefähr Werkzeugen in der Realität (betrachte auch den Werkzeugkasten im Zeichenprogramm deiner Wahl, etwa m\$PAIN).
+		\item Die Zeichenobjekte sind alle Zeichenobjekte (triviale Aussage? nein!)
+	\end{itemize}
+	
+	\pause
+	\vspace{1em}
+	
+	Die Klassen der Zeichenobjekte sind unabhängig voneinander, sie sind aber alle insofern ähnlich, dass sie mit einer Leinwand interagieren (= sie sind alle Zeichenobjekte). Man kann also die Menge von Klassen (für Linien, Kreise, Rechtecke usw.) kategorisieren bzw. klassifizieren. Dafür verwenden wir eine gemeinsame Basis-Klasse (alle Zeichenobjekt-Klassen erben von derselben Basisklasse).
+\end{frame}
+
+\begin{frame}[fragile]{Interfaces}
+	Da die Zeichenobjekt-Klassen voneinander unabhängig sind (z.B. um einen Kreis zu zeichnen hilft es normalerweise nicht weiter, zu wissen, wie man eine gerade Linie zeichnet), ist ihre einzige Gemeinsamkeit die Anwendung auf eine Leinwand. Dies kann man zum Ausdruck bringen, indem man einer gemeinsamen Basisklasse nur eine einzige pure virtual member function verpasst (und sonst keine member).
+	
+	\pause
+	\vspace{1em}
+	
+	Diese Funktion dient dann dazu, ein Zeichenobjekt auf eine Leinwand anzuwenden, könnte also \verb|apply| genannt werden und ein \verb|Bitmap24&| als Parameter annehmen.
+\end{frame}
+
+\begin{frame}[fragile]{Ein Ausblick: Kommandozeile}
+	In einem nächsten Schritt (Workshop) soll von der Kommandozeile aus gezeichnet werden können, also etwa durch eine Eingabe:
+	\verb|moveto 0.5 0.4<ENTER>lineto 0 0<ENTER>|.
+	
+	\vspace{1em}
+	
+	Der Benutzer muss hierbei um eine Linie zu zeichnen nur einen Endpunkt angeben, die Linie wird dann von einer vorhandenen, aktuellen Position bis zur angegebenen Position gezeichnet und anschließend die Endposition als neue \enquote{aktuelle Position} gespeichert. Auf diese Weise sind auch Polygone sehr leicht zu zeichnen.
+	Diese aktuelle Position sowie eine aktuelle Farbe -- zusammen sozusagen ein Pinsel -- müssen also noch irgendwo gespeichert werden. Eine Möglichkeit hierfür ist, die Leinwand-Klasse zu erweitern. Man kann sich darunter dann etwa einen Tintenstrahldrucker oder Plotter vorstellen.
+\end{frame}
+
+\begin{frame}[fragile]{Die Klasse BatchBitmap24}
+	Die Zeichenobjekte, die also theoretisch auf einer Instanz eines \verb|Bitmap24| arbeiten können, sollten -- um die Benutzereingabe auf der Kommandozeile zu vereinfachen -- diesen vorhandenen Pinsel verwenden.
+	
+	\pause
+	\vspace{1em}
+	
+	Die Klasse \verb|BatchBitmap24| ist eine kleine Erweiterung von \verb|Bitmap24|, die genau diesen Pinsel speichert. Daher benötigen die Zeichenobjekte als Interaktionsobjekt eine Instanz eines \verb|BatchBitmap24|.
+\end{frame}
+
+\begin{frame}[fragile]{Die unsäglichen Koordinaten-Klassen}
+	Mit etwas zu viel Beschützerinstinkt habe ich wohl die beiden Klassen \verb|AbsoluteCoordinate| und \verb|RelativCoordinate| geschaffen.
+	
+	\pause
+	\footnotesize
+	
+	\begin{block}{AbsoluteCoordinate}
+		Fasst egtl. nur den x- und y-Wert einer Koordinate zusammen in eine Datenstruktur. Der Beschützerinstinkt drückt sich dabei so aus, dass eine Instanz von \verb|AbsoluteCoordinate| immer einer Leinwand zugeordnet ist. Das verhindert (soll verhindern), dass die Koordinate auf eine ungültige Position verweist (Lokalität von Fehlermeldungen).
+	\end{block}
+	
+	\pause
+	
+	\begin{block}{RelativeCoordinate}
+		Die \verb|RelativeCoordinate| ist dann sozusagen die \enquote{freie Variante einer sicheren Koordinate}. Sie speichert eine Koordinate als Vielfaches von Breite bzw. Höhe, ihre Komponenten liegen also in $[0, 1]$ (dass die 1 eingeschlossen werden sollte, werde ich vielleicht einmal an anderer Stelle erläutern).
+		Dadurch, dass sie unabhängig ist von einer konkreten Leinwand (sowohl durch die fehlende Prüfung aber logisch auch da sie sich eben \emph{nicht} auf eine feste Breite oder Höhe bezieht) eignet sie sich in meinen Augen wesentlich besser etwa um in einem Linien-Zeichenobjekt eine Endkoordinate zu speichern.
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Das Interface IBatchDrawable}
+	Dieses Interface definiert nun die besprochene pure virtual member function, welche alle Zeichenobjekte (deren Klassen) auszeichnet: \verb|virtual bool applyTo( BatchBitmap24& ) = 0;|
+	
+	Der Rückgabewert soll hierbei \verb|true| im Falle des erfolgreichen Zeichnens sein.
+	
+	\pause
+	\vspace{1em}
+	
+	Die Klassen der Zeichenobjekte erben also von \verb|IBatchDrawable|, und override die pure virtual member function. Im override rufen sie den Algorithmus auf und zeichnen somit auf die Leinwand.
+\end{frame}
+
+\begin{frame}[fragile]{Ausblick: Der Sinn von IBatchDrawable}
+	\begin{itemize}
+		\item Man kann über einen \verb|IBatchDrawable*|-Pointer die Zeichenobjekte auf eine Instanz eines \verb|BatchBitmap24| anwenden, ohne näheres über konkrete Zeichenobjekt (den static type) zu wissen. Mittels dynamic storage duration / \verb|new| lassen sich somit zur Laufzeit verschiedene Zeichenobjekte erstellen (bspw. auf Anfrage des Benutzers!) und allgemein auf eine Leinwand anwenden.
+		\item Die Klassifizierung aller Zeichenobjekte als \enquote{is-a} \verb|IBatchDrawable| erlaubt es, eine Menge von Zeichenobjekten gemeinsam zu \enquote{speichern} -- gemeint ist etwa ein Array von \verb|IBatchDrawable*|-Pointern, oder der bekannte Ringpuffer mit \verb|IBatchDrawable*| statt \verb|double|.
+	\end{itemize}
+\end{frame}
