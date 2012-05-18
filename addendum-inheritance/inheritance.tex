@@ -204,9 +204,9 @@
 
 \section{Virtuelle Methoden}
 
-\begin{frame}[fragile]{Overriding}
-	\begin{block}{Überschreiben (Standard, 10.3:2)}
-		In einer Klasse \verb|CParent| sei eine virtual member function \verb|apply| deklariert. Eine Klasse \verb|CChild| erbe direkt oder indirekt von \verb|CParent|. Wenn nun in \verb|CChild| eine Funktion mit \emph{demselben Namen und derselben Parameter-Liste} wie \verb|CParent::apply| deklariert ist, so ist \verb|CChild::apply| ebenfalls virtual (egal, ob sie so explizit deklariert wurde oder nicht) und sie \emph{überschreibt} \verb|CParent::apply|.
+\begin{frame}[fragile]{Überschreiben}
+	\begin{block}{Überschreiben von virtuellen Funktionen (Standard, 10.3:2)}
+		In einer Klasse \verb|CParent| sei eine virtual member function \verb|apply| deklariert. Eine Klasse \verb|CChild| sei direkt oder indirekt von \verb|CParent| abgeleitet. Wenn nun in \verb|CChild| eine Funktion mit \emph{demselben Namen und derselben Parameter-Liste} wie \verb|CParent::apply| deklariert ist, so ist \verb|CChild::apply| ebenfalls virtual (egal, ob sie so explizit deklariert wurde oder nicht) und sie \emph{überschreibt} \verb|CParent::apply|.
 		Der Einfachheit halber sagt man, dass Definition der virtual member function in der Elterklasse ebenfalls eine Überschreibung ist, wenn sie nicht als pure virtual member function angelegt wurde (\emph{pure}: später).
 	\end{block}
 	
@@ -216,8 +216,8 @@
 \end{frame}
 
 \begin{frame}[fragile]{Das Aufrufen virtueller Funktionen (1)}
-	\begin{block}{calling a virtual function (Standard, 5.2.2:1)}
-		Wird eine virtual function aufgerufen, wird der dynamic type des »Dings« herangezogen. Es wird dann ausgehend vom dynamic type in der Vererbungshierarchie in Richtung der Elter-Klassen nach einer Überschreibung der Funktion gesucht und der erste Treffer verwendet.
+	\begin{block}{Funktionsaufrufe (Standard, 5.2.2:1)}
+		Wird eine virtual function aufgerufen, wird der dynamic type des »Dings« herangezogen. Es wird dann ausgehend vom dynamic type (meist-abgeleiteten Klasse) in der Vererbungshierarchie bzw. Stammbaum in Richtung der Elter-Klassen nach einer Überschreibung der Funktion gesucht und der erste Treffer verwendet.
 	\end{block}
 	
 	\pause
