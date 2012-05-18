@@ -1,9 +1,19 @@
+#include <ostream>
+#include <cassert>
+#include <cstring>	// for memcpy
 #include <algorithm>	// for min, max
+
 #include "bmpheader.h"
 
 
 namespace bmp
 {
+	bool isLittleEndian();
+
+	void convert2BigEndian(byte* dst, std::size_t dstCount,
+	                       byte const* src, std::size_t srcCount);
+
+
 	bool isLittleEndian()
 	{
 		assert(1 == sizeof(unsigned char));
@@ -115,7 +125,8 @@ namespace bmp
 		assert(data + sizeof(data) == pData);
 
 		// write to stream
-		p_os.write( data, (int)sizeof(data) );
+		// NOTE: we convert from `unsigned char*` to `signed char const*`, that's OK
+		p_os.write( reinterpret_cast < char const* >(data), (int)sizeof(data) );
 
 		return p_os;
 	}
@@ -150,7 +161,9 @@ namespace bmp
 
 		assert(data + sizeof(data) == pData);
 
-		p_os.write( data, sizeof(data) );
+		// write to stream
+		// NOTE: we convert from `unsigned char*` to `signed char const*`, that's OK
+		p_os.write( reinterpret_cast < char const* >(data), sizeof(data) );
 
 		return p_os;
 	}

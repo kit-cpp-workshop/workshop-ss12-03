@@ -5,6 +5,7 @@
 
 
 #include <string>
+#include "bmp-types.h"
 #include "bmpheader.h"
 
 
@@ -73,4 +74,4 @@ namespace bmp
 
 
 
-#endif
+#endif	// H_BMP

@@ -1,8 +1,6 @@
 #ifndef COORDINATE_H
 #define COORDINATE_H
 
-#include <istream>
-
 // not required, since we only use pointers and refs in this header
 #include "bmp.h"
 

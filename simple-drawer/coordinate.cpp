@@ -1,4 +1,5 @@
 #include <cassert>
+#include <istream>
 
 #include "coordinate.h"
 #include "bmp.h"

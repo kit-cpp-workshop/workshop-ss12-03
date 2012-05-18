@@ -1,11 +1,12 @@
 #ifndef DRAWABLE_H
 #define DRAWABLE_H
 
+
+#include "batchbmp.h"
+
+
 namespace bmp
 {
-	class BatchBitmap24;
-
-
 	// A class implementing the IBatchDrawable interface
 	// is drawable to a BatchBitmap24
 	class IBatchDrawable
@@ -44,4 +45,6 @@ namespace bmp
 		virtual bool applyTo(Bitmap24&) = 0;
 	};*/
 }
-#endif
+
+
+#endif	// DRAWABLE_H

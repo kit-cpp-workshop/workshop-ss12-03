@@ -4,8 +4,6 @@
 
 
 
-#include <istream>
-#include <utility>
 #include "bmp.h"
 #include "coordinate.h"
 
