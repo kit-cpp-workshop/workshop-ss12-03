@@ -68,13 +68,15 @@ namespace least_types
 			};
 		};
 
-		LEAST_TYPES_TYPE(long int, LONG_MAX, no_bigger_available);
-		LEAST_TYPES_TYPE(int, INT_MAX, long int);
-		LEAST_TYPES_TYPE(short int, SHRT_MAX, int);
+		LEAST_TYPES_TYPE(  signed long int,  LONG_MAX, no_bigger_available);
+		LEAST_TYPES_TYPE(  signed int,       INT_MAX,  long int);
+		LEAST_TYPES_TYPE(  signed short int, SHRT_MAX, int);
+		LEAST_TYPES_TYPE(  signed char,      CHAR_MAX, short int);
 
-		LEAST_TYPES_TYPE(unsigned long int, ULONG_MAX, no_bigger_available);
-		LEAST_TYPES_TYPE(unsigned int, UINT_MAX, unsigned long int);
+		LEAST_TYPES_TYPE(unsigned long int,  ULONG_MAX, no_bigger_available);
+		LEAST_TYPES_TYPE(unsigned int,       UINT_MAX,  unsigned long int);
 		LEAST_TYPES_TYPE(unsigned short int, USHRT_MAX, unsigned int);
+		LEAST_TYPES_TYPE(unsigned char,      UCHAR_MAX, unsigned short int);
 
 
 	template < typename _Signed, largest_int _bits >
@@ -84,7 +86,7 @@ namespace least_types
 		struct least < signed, _bits >
 		{
 			// NOTE: _bits-2
-			typedef typename type_max <   signed short int > :: template least_cmp < ((((LEAST_TYPES_LARGEST_UNITY << (_bits-2)) - 1) << 1) + 1) > :: type :: own
+			typedef typename type_max <   signed char > :: template least_cmp < ((((LEAST_TYPES_LARGEST_UNITY << (_bits-2)) - 1) << 1) + 1) > :: type :: own
 			        type;
 		};
 
@@ -92,7 +94,7 @@ namespace least_types
 		struct least < unsigned, _bits >
 		{
 			// NOTE: _bits-1
-			typedef typename type_max < unsigned short int > :: template least_cmp < ((((LEAST_TYPES_LARGEST_UNITY << (_bits-1)) - 1) << 1) + 1) > :: type :: own
+			typedef typename type_max < unsigned char > :: template least_cmp < ((((LEAST_TYPES_LARGEST_UNITY << (_bits-1)) - 1) << 1) + 1) > :: type :: own
 			        type;
 		};
 }
