@@ -1,28 +1,26 @@
-\section{Das Bitmap-Framework}
-
-\subsection{Bitmap24 und Algorithmen}
+\section{Bitmap24 und Algorithmen}
 
 \begin{frame}[fragile]{Die Klasse Bitmap24}
-	Die Klasse \verb|Bitmap24| ist eine minimale Klasse zum Abspeichern von Bitmaps (.bmp). Sie enthält dafür die member function \verb|save|, der am einfachsten ein String-Literal als Parameter übergeben wird, etwa \verb|save("filename.bmp")|.
+	Die Klasse \verb|Bitmap24| ist eine minimale Klasse zum Abspeichern von Bitmaps als .bmp-Dateien. Sie enthält dafür die member function \verb|save|, der am einfachsten ein String-Literal als Parameter übergeben wird, etwa \verb|save("filename.bmp")|.
 	
 	\pause
 	
 	\begin{block}{Wie speichere ich eine Bitmap?}
-		Die Bilddaten (Pixel) müssen in den Puffer von \verb|Bitmap24| liegen, sie können dorthin mit \verb|setPixel| geschrieben werden. Anschließend speichert ein Aufruf der member function \verb|save| die Bitmap als Datei. Geläufige C++ Implementierungen werden diese Datei in das Arbeitsverzeichnis legen, etwa im Ordner der ausführbaren Datei. Ebenfalls bei den geläufigen Implementierungen kann man dem Dateinamen noch einen Pfad voranstellen.
+		Die Bilddaten (Pixel) müssen im Puffer von \verb|Bitmap24| liegen, sie können dorthin mit \verb|setPixel| geschrieben werden. Anschließend speichert ein Aufruf der member function \verb|save| die Bitmap als Datei. Geläufige C++ Implementierungen (gcc, MSVC) werden diese Datei in das Arbeitsverzeichnis legen, etwa im Ordner der ausführbaren Datei. Ebenfalls bei den geläufigen Implementierungen kann man dem Dateinamen noch einen Pfad voranstellen.
 	\end{block}
 \end{frame}
 
 \begin{frame}{Objektorientierung im Bitmap-Framework}
-	Das Bitmap-Framework legt den Wert auf die Interaktion von Instanzen (Objekten). Zum Zeichnen einer Line soll daher ein Linien-Objekt erstellt werden, welches dann mit einem \enquote{Leinwand}-Objekt interagiert.
+	Dieser Workshop soll die Interaktion von Objekten (Instanzen) näherbringen. Zum Zeichnen einer Line soll daher eine Linienzeichner-Klasse existieren. Eine Linienzeichner-Instanz soll dann mit einer Instanz einer \enquote{Leinwand}-Klasse interagieren.
 	
 	\pause
 	\vspace{1em}
 	
-	Damit die beiden Objekte miteinander interagieren können, brauchen sie sozusagen eine gemeinsame Sprache. Hier basiert diese auf der Verwendung von Pixeln: Die Linie weiß, wie sie in Pixeln aussieht, und die Leinwand stellt eine Möglichkeit zur Verfügung, pixelweise auf sie zu zeichnen.
+	Damit die beiden Instanzen (Linienzeichner-Instanz, Leinwand-Instanz) miteinander interagieren können, brauchen sie sozusagen eine gemeinsame Sprache. Hier basiert diese auf der Verwendung von Pixeln: Die Linie weiß, wie sie in Pixeln aussieht, und die Leinwand stellt eine Möglichkeit zur Verfügung, pixelweise auf sie zu zeichnen.
 \end{frame}
 
 \begin{frame}[fragile]{Minimalimplementierung der Leinwand}
-	Wir werden später sehen, dass es eigentlich vorteilhaft ist, die gemeinsame Sprache zwischen Zeichenobjekten (Linie, Kreis usw.) und Leinwand abstrakt in Form eines Interface festzuhalten. Wir wollen jedoch zunächst unser Programm einfach halten und Abstraktion vermeiden.
+	Wir werden später sehen, dass es eigentlich vorteilhaft ist, die gemeinsame Sprache zwischen Zeichnern (Linie, Kreis usw.) und Leinwand abstrakt in Form eines Interface festzuhalten. Um das Programm einfach zu halten, wird zunächst auf diese Abstraktion verzichtet.
 	
 	\pause
 	\vspace{1em}
@@ -31,7 +29,7 @@
 \end{frame}
 
 \begin{frame}{Zeichen-Algorithmus}
-	Bevor man damit beginnt, eine Klasse für ein Zeichen-Objekt zu schreiben, sollte man eine Idee haben, wie das zu zeichnende Objekt in Pixeln aussieht. Man benötigt also eine Vorgehensweise, eine Menge von Pixeln zu \enquote{setzen} (den Farbwert zu setzen) $\implies$ ein Algorithmus.
+	Bevor man damit beginnt, eine Zeichner-Klasse zu schreiben, sollte man eine Idee haben, wie das zu Zeichnende in Pixeln aussieht. Man benötigt also eine Vorgehensweise, eine Menge von Pixeln zu \enquote{setzen} (den Farbwert zu setzen) $\implies$ ein Algorithmus.
 	
 	\pause
 	\vspace{1em}
@@ -50,60 +48,59 @@
 \end{frame}
 
 \begin{frame}[fragile]{Implementierung eines Zeichen-Algorithmus (2)}
-	Es stehen nun innerhalb der Funktion \verb|fillCanvas| die Eigenschaften und Fähigkeiten des \verb|Bitmap24| zur Verfügung, wir können also pixelweise die Bitmap schreiben und die Höhe sowie Breite abfragen. Da die Pixel bei $(0, 0)$ beginnen und die Leinwand bei $(\text{width}-1, \text{height}-1)$ zu Ende ist, sind alle nötigen Informationen für das Füllen der Leinwand vorhanden.
+	Es stehen nun innerhalb der Funktion \verb|fillCanvas| die Eigenschaften und Fähigkeiten der Instanz von \verb|Bitmap24| zur Verfügung, man kann also pixelweise die Bitmap zeichnen und die Höhe sowie Breite abfragen. Da die Pixel bei $(0, 0)$ beginnen und die Leinwand bei $(\text{width}-1, \text{height}-1)$ zu Ende ist, sind alle nötigen Informationen für das Füllen der Leinwand vorhanden.
 \end{frame}
 
 
-\subsection{BatchBitmap24 und Zeichen-Objekte}
+\section{BatchBitmap24 und Zeichner-Instanzen}
 
-\begin{frame}{Zeichen-Objekte}
-	Wir könnten basierend auf dem Algorithmus, der oben beispielhaft als Funktion designed wurde, bereits ein Objekt (eine Klasse) machen. So könnte dieses Objekt bspw. die Farbe als data member speichern und eine member function enthalten, die als Parameter nur noch die Leinwand annehmen muss. Was wäre der Vorteil davon?
+\begin{frame}{Zeichner-Instanzen}
+	Man könnte basierend auf dem Algorithmus, der oben beispielhaft als Funktion designed wurde, bereits ein eine Klasse bauen. So könnten Instanzen dieser Klasse bspw. die Farbe als data member speichern und eine member function enthalten, die als Parameter nur noch die Leinwand annehmen muss. Was wäre der Vorteil davon?
 	
 	\pause
 	\vspace{1em}
 	
-	Z.B. könnte man ein solches Objekt im Voraus erzeugen, und anschließend auf eine Reihe von Leinwänden anwenden. So könnte man etwa ein Zeichenobjekt pro Grundfarbe anlegen. Aber richtig groß ist der Vorteil noch nicht, das ändert sich aber mit ein paar mehr Schritten.
+	Z.B. könnte man eine solche Instanz im Voraus erzeugen, und anschließend auf eine Reihe von Leinwänden anwenden. So könnte man etwa eine FüllDieLeinwand-Instanz pro Grundfarbe anlegen. Aber richtig groß ist der Vorteil noch nicht, das ändert sich aber mit ein paar mehr Schritten.
 \end{frame}
 
 \begin{frame}{Klassifizierung}
-	Wenn ich die Menge von Klassen für Zeichenobjekte betrachte, so fallen mir zwei Punkte auf:
+	Wenn ich die Menge von Zeichner-Klassen betrachte, so fallen mir zwei Punkte auf:
 	\begin{itemize}
-		\item Die Zeichenobjekte entsprechen ungefähr Werkzeugen in der Realität (betrachte auch den Werkzeugkasten im Zeichenprogramm deiner Wahl, etwa m\$PAIN).
-		\item Die Zeichenobjekte sind alle Zeichenobjekte (triviale Aussage? nein!)
+		\item Die Zeichner-Instanzen entsprechen ungefähr Werkzeugen in der Realität (betrachte auch den Werkzeugkasten im Zeichenprogramm deiner Wahl, etwa m\$PAIN).
+		\item Die Zeichner-Instanzen sind alle Zeichner-Instanzen (triviale Aussage? nein!)
 	\end{itemize}
 	
 	\pause
 	\vspace{1em}
 	
-	Die Klassen der Zeichenobjekte sind unabhängig voneinander, sie sind aber alle insofern ähnlich, dass sie mit einer Leinwand interagieren (= sie sind alle Zeichenobjekte). Man kann also die Menge von Klassen (für Linien, Kreise, Rechtecke usw.) kategorisieren bzw. klassifizieren. Dafür verwenden wir eine gemeinsame Basis-Klasse (alle Zeichenobjekt-Klassen erben von derselben Basisklasse).
+	Die Zeichner-Klassen sind unabhängig voneinander, sie sind aber alle insofern ähnlich, dass ihre Instanzen mit einer Leinwand interagieren (= sie sind alle Zeichner-Instanzen). Man kann also die Menge von Klassen (für Linien, Kreise, Rechtecke usw.) kategorisieren bzw. klassifizieren. Dafür verwenden wir eine gemeinsame Basis-Klasse -- alle Zeichner-Klassen sind dann von derselben Basisklasse abgeleitet.
 \end{frame}
 
 \begin{frame}[fragile]{Interfaces}
-	Da die Zeichenobjekt-Klassen voneinander unabhängig sind (z.B. um einen Kreis zu zeichnen hilft es normalerweise nicht weiter, zu wissen, wie man eine gerade Linie zeichnet), ist ihre einzige Gemeinsamkeit die Anwendung auf eine Leinwand. Dies kann man zum Ausdruck bringen, indem man einer gemeinsamen Basisklasse nur eine einzige pure virtual member function verpasst (und sonst keine member).
+	Da die Zeichner-Klassen voneinander unabhängig sind (z.B. um einen Kreis zu zeichnen hilft es normalerweise nicht weiter, zu wissen, wie man eine gerade Linie zeichnet), ist ihre einzige Gemeinsamkeit die Anwendung ihrer Instanzen auf eine Leinwand. Dies kann man zum Ausdruck bringen, indem man der gemeinsamen Basisklasse nur eine einzige pure virtual member function verpasst (und sonst keine member).
 	
 	\pause
 	\vspace{1em}
 	
-	Diese Funktion dient dann dazu, ein Zeichenobjekt auf eine Leinwand anzuwenden, könnte also \verb|apply| genannt werden und ein \verb|Bitmap24&| als Parameter annehmen.
+	Diese Funktion dient dann dazu, eine Zeichner-Instanz auf eine Leinwand anzuwenden, könnte also \verb|applyTo| genannt werden und ein \verb|Bitmap24&| als Parameter annehmen.
 \end{frame}
 
 \begin{frame}[fragile]{Ein Ausblick: Kommandozeile}
-	In einem nächsten Schritt (Workshop) soll von der Kommandozeile aus gezeichnet werden können, also etwa durch eine Eingabe:
-	\verb|moveto 0.5 0.4<ENTER>lineto 0 0<ENTER>|.
-	
-	\vspace{1em}
-	
-	Der Benutzer muss hierbei um eine Linie zu zeichnen nur einen Endpunkt angeben, die Linie wird dann von einer vorhandenen, aktuellen Position bis zur angegebenen Position gezeichnet und anschließend die Endposition als neue \enquote{aktuelle Position} gespeichert. Auf diese Weise sind auch Polygone sehr leicht zu zeichnen.
-	Diese aktuelle Position sowie eine aktuelle Farbe -- zusammen sozusagen ein Pinsel -- müssen also noch irgendwo gespeichert werden. Eine Möglichkeit hierfür ist, die Leinwand-Klasse zu erweitern. Man kann sich darunter dann etwa einen Tintenstrahldrucker oder Plotter vorstellen.
-\end{frame}
-
-\begin{frame}[fragile]{Die Klasse BatchBitmap24}
-	Die Zeichenobjekte, die also theoretisch auf einer Instanz eines \verb|Bitmap24| arbeiten können, sollten -- um die Benutzereingabe auf der Kommandozeile zu vereinfachen -- diesen vorhandenen Pinsel verwenden.
+	In einem nächsten Schritt (Workshop) soll von der Kommandozeile aus gezeichnet werden können. Es vereinfacht dabei die Benutzung, wenn man in einer Schrittabfolge arbeiten kann. So wählt man einen Pinsel, dann eine Position, und schließlich zeichnet man von dieser Position aus etwa eine Linie bis zu einem Endpunkt (3 Schritte). Eine zweite Linie zeichnet man dann in einem vierten Schritt durch die Angabe eines weiteren Endpunktes, die Linie geht dann vom Endpunkt der vorigen Linie bis zu dem neuen Endpunkt.
 	
 	\pause
 	\vspace{1em}
 	
-	Die Klasse \verb|BatchBitmap24| ist eine kleine Erweiterung von \verb|Bitmap24|, die genau diesen Pinsel speichert. Daher benötigen die Zeichenobjekte als Interaktionsobjekt eine Instanz eines \verb|BatchBitmap24|.
+	Diese aktuelle Position sowie eine aktuelle Farbe (der Pinsel) müssen dafür noch irgendwo gespeichert werden. Eine Möglichkeit hierfür ist, die Leinwand-Klasse zu erweitern. Man kann sich darunter dann statt einer Leinwand einen Tintenstrahldrucker oder Plotter vorstellen.
+\end{frame}
+
+\begin{frame}[fragile]{Die Klasse BatchBitmap24}
+	Die Zeichner-Instanzen, die also theoretisch auf einer Instanz eines \verb|Bitmap24| arbeiten könnten, sollten -- um die Benutzereingabe auf der Kommandozeile zu vereinfachen -- nur so wenig Parameter wie nötig verwenden und den Rest aus vorhandenen Daten ziehen.
+	
+	\pause
+	\vspace{1em}
+	
+	Die Klasse \verb|BatchBitmap24| ist eine kleine Erweiterung von \verb|Bitmap24|, welche die besprochene Farbe und eine Position speichert. Daher sollen die Zeichner-Instanzen zur Interaktion eine Instanz von \verb|BatchBitmap24| verwenden statt eine Instanz von \verb|Bitmap24|.
 \end{frame}
 
 \begin{frame}[fragile]{Die unsäglichen Koordinaten-Klassen}
@@ -113,31 +110,31 @@
 	\footnotesize
 	
 	\begin{block}{AbsoluteCoordinate}
-		Fasst egtl. nur den x- und y-Wert einer Koordinate zusammen in eine Datenstruktur. Der Beschützerinstinkt drückt sich dabei so aus, dass eine Instanz von \verb|AbsoluteCoordinate| immer einer Leinwand zugeordnet ist. Das verhindert (soll verhindern), dass die Koordinate auf eine ungültige Position verweist (Lokalität von Fehlermeldungen).
+		Fasst einfach den x- und y-Wert einer Koordinate zusammen in eine Datenstruktur. Der Beschützerinstinkt drückt sich dabei so aus, dass eine Instanz von \verb|AbsoluteCoordinate| immer einer Leinwand zugeordnet ist. Das verhindert (soll verhindern), dass die Koordinate auf eine ungültige Position verweist (Lokalität von Fehlermeldungen).
 	\end{block}
 	
 	\pause
 	
 	\begin{block}{RelativeCoordinate}
 		Die \verb|RelativeCoordinate| ist dann sozusagen die \enquote{freie Variante einer sicheren Koordinate}. Sie speichert eine Koordinate als Vielfaches von Breite bzw. Höhe, ihre Komponenten liegen also in $[0, 1]$ (dass die 1 eingeschlossen werden sollte, werde ich vielleicht einmal an anderer Stelle erläutern).
-		Dadurch, dass sie unabhängig ist von einer konkreten Leinwand (sowohl durch die fehlende Prüfung aber logisch auch da sie sich eben \emph{nicht} auf eine feste Breite oder Höhe bezieht) eignet sie sich in meinen Augen wesentlich besser etwa um in einem Linien-Zeichenobjekt eine Endkoordinate zu speichern.
+		Dadurch, dass sie unabhängig ist von einer konkreten Leinwand (auch logisch, da sie sich eben \emph{nicht} auf eine feste Breite oder Höhe bezieht) eignet sie sich in meinen Augen wesentlich besser etwa um in einem Linien-Zeichenobjekt eine Endkoordinate zu speichern.
 	\end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Das Interface IBatchDrawable}
-	Dieses Interface definiert nun die besprochene pure virtual member function, welche alle Zeichenobjekte (deren Klassen) auszeichnet: \verb|virtual bool applyTo( BatchBitmap24& ) = 0;|
+	Dieses Interface dient nun als besprochene gemeinsame Basisklasse aller Zeichner-Klassen. Es enthält folgende pure virtual member function: \verb|virtual bool applyTo( BatchBitmap24& ) = 0;|
 	
 	Der Rückgabewert soll hierbei \verb|true| im Falle des erfolgreichen Zeichnens sein.
 	
 	\pause
 	\vspace{1em}
 	
-	Die Klassen der Zeichenobjekte erben also von \verb|IBatchDrawable|, und override die pure virtual member function. Im override rufen sie den Algorithmus auf und zeichnen somit auf die Leinwand.
+	Die Zeichner-Klassen sind also von \verb|IBatchDrawable| abgeleitet, und überschreiben die pure virtual member function. In der Überschreibung wird der Zeichen-Algorithmus aufgerufen und somit auf die Leinwand gezeichnet.
 \end{frame}
 
 \begin{frame}[fragile]{Ausblick: Der Sinn von IBatchDrawable}
 	\begin{itemize}
-		\item Man kann über einen \verb|IBatchDrawable*|-Pointer die Zeichenobjekte auf eine Instanz eines \verb|BatchBitmap24| anwenden, ohne näheres über konkrete Zeichenobjekt (den static type) zu wissen. Mittels dynamic storage duration / \verb|new| lassen sich somit zur Laufzeit verschiedene Zeichenobjekte erstellen (bspw. auf Anfrage des Benutzers!) und allgemein auf eine Leinwand anwenden.
-		\item Die Klassifizierung aller Zeichenobjekte als \enquote{is-a} \verb|IBatchDrawable| erlaubt es, eine Menge von Zeichenobjekten gemeinsam zu \enquote{speichern} -- gemeint ist etwa ein Array von \verb|IBatchDrawable*|-Pointern, oder der bekannte Ringpuffer mit \verb|IBatchDrawable*| statt \verb|double|.
+		\item Man kann über einen \verb|IBatchDrawable*|-Pointer die Zeichen-Instanzen auf eine Instanz von \verb|BatchBitmap24| anwenden, ohne Näheres über eine konkrete Zeichner-Klasse zu wissen. Mittels dynamic storage duration / \verb|new| lassen sich somit zur Laufzeit verschiedene Zeichner-Instanzen erstellen (bspw. auf Anfrage des Benutzers!) und allgemein auf eine Leinwand anwenden.
+		\item Die Klassifizierung aller Zeichner-Instanzen als \enquote{is-a} \verb|IBatchDrawable| erlaubt es, eine Menge von Zeichner-Instanzen gemeinsam zu \enquote{speichern} -- gemeint ist etwa ein Array von \verb|IBatchDrawable*|-Pointern, oder der bekannte Ringpuffer mit \verb|IBatchDrawable*| statt \verb|double|.
 	\end{itemize}
 \end{frame}

@@ -1,32 +1,33 @@
-\section{Vererbung}
-
-\subsection{Grundlegendes zur Vererbung}
+\section{Grundlegendes zur Vererbung}
 
 \begin{frame}[fragile]{Klassen und Instanzen}
-	Eine kurze Anmerkung zum Vokabular: Um den unsäglichen Begriff \enquote{Objekt} aus diesem Kontext zunächst herauszuhalten, spreche ich von Instanzen. Analogie aus der Biologie: \emph{Fuchur, Olis Hund,} ist eine Individuum der Unterart Haushund. Das Individuuen entspricht der Instanz, die Unterart einer Klasse.
+	Eine kurze Anmerkung zum Vokabular: Um den unsäglichen Begriff \enquote{Objekt} aus diesem Kontext zunächst herauszuhalten, spreche ich von Instanzen.\\
+	Eine Instanz ist ein konkretes Individuum, das nach dem Plan der Klasse erstellt wurde. Sie hat damit die Eigenschaften und Fähigkeiten, welche in der Klasse beschrieben werden.
+	
+	Analogie aus der Biologie: \emph{Fuchur, Olis Hund,} ist ein konkretes Individuum der Unterart Haushund. Er kann laufen (Fähigkeit) und zwar mit einer nur ihm eigenen Geschwindigkeit (Eigenschaft).
 	
 	\vspace{1em}
 	
-	Da es in C++ nur \enquote{Klassen} (\verb|class|, \verb|struct|, \verb|union|) und keine weitere Unterscheidung gibt wie Gattung, Art, Unterart, entsprechen die Klassen von C++ eigentlich allgemeineren Kategorien als nur etwa der Unterart.
+	Natürlich hat dieser Vergleich mit der Biologie seine Grenzen. Eine davon ist etwa, dass es dort nicht nur Unterarten gibt, sondern mehrere Ebenen von Kategorien, etwa Gattungen und Arten. In C++ hingegen gibt es nur eine Art von Kategorie: die Klasse (\verb|class|, \verb|struct|, \verb|union|).
 \end{frame}
 
 \begin{frame}[fragile]{Vererbung allgemein}
-	Eine Klasse kann von anderen Klassen erben. Wir beschränken uns vorläufig auf die einfachste Form von Vererbung, die sogenannte \enquote{public non-virtual single inheritance}. Zur Beschreibung wollen wir zwei Klassen verwenden: \verb|CParent| und \verb|CChild|.
+	Eine Klasse kann von anderen Klassen abgeleitet werden. Wir beschränken uns vorläufig auf die einfachste Form von Vererbung, die sogenannte \enquote{public non-virtual single inheritance}. Zur Beschreibung wollen wir zwei Klassen verwenden: \verb|CParent| und \verb|CChild|.
 	
 	\pause
 	
-	\verb|CChild| erbe nun von \verb|CParent| in der genannten einfachsten Weise. Dann wird eine Beziehung zwischen den Klassen hergestellt.
+	\verb|CChild| sei nun von \verb|CParent| in der genannten einfachsten Weise abgeleitet. Dann wird eine Beziehung zwischen den Klassen hergestellt.
 	\begin{itemize}
-		\item Eine Analogie aus der Biologie: Jedes Säugetier ist ein Wirbeltier.
-		\item Hier: Jede Instanz von \verb|CChild| \enquote{ist} eine Instanz von \verb|CParent| (eine \enquote{is-a}-Beziehung).
+		\item Eine Analogie aus der Biologie: Die Kategorie \enquote{Säugetier} ist eine Unterkategorie von \enquote{Wirbeltier}.
+		\item Hier: \verb|CChild| ist eine Erweiterung von \verb|CParent|.
 	\end{itemize}
 	
 	\pause
 	
 	\small
-	Diese Sprechweise ist etwas ungenau, sie meint: Eine Instanz von \verb|CChild| hat \emph{alle} Eigenschaften (\enquote{data members}) und Fähigkeiten (\enquote{member functions}) einer Instanz von \verb|CParent|.
+	Diese Sprechweise ist etwas ungenau, sie meint: Eine Instanz von \verb|CChild| hat \emph{alle} Eigenschaften (\enquote{data members}) und Fähigkeiten (\enquote{member functions}) einer Instanz von \verb|CParent|, sie \emph{ist auch eine Instanz der Klasse} \verb|CParent| (eine \enquote{is-a}-Beziehung).
 	
-	In der Biologie könnte man das ähnlich vollbringen: ich ordne Olis Hund aufgrund seiner Eigenschaften und Fähigkeiten der Unterart \emph{Haushund} zu, damit ist Fuchur von der Art \emph{Wolf}.
+	In der Biologie könnte man das ähnlich vollbringen: Olis Hund ist von der Unterart \emph{Haushund} und von der Art \emph{Wolf}.
 \end{frame}
 
 \begin{frame}[fragile]{Beispiel mit konkreten Klassen}
@@ -47,6 +48,20 @@
 	CParent myPrObj;
 	CChild  myObj;
 	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Nochmal Sprechweise}
+	In unserem Beispiel ist \verb|CChild| eine \enquote{Kindklasse} von \verb|CParent|, oder andersherum: \verb|CParent| ist eine \enquote{Elterklasse}. Man spricht auch von \enquote{Basisklasse} (Elter) und \enquote{abgeleiteter Klasse} (Kind).
+	
+	\pause
+	\vspace{1em}
+	
+	Statt von \enquote{Instanzen} spricht man häufig auch von \enquote{Objekten}. Der Begriff \enquote{Instanz} geht dabei mehr auf den Bezug zur Klasse ein (eine Instanz einer Klasse), während der Begriff \enquote{Objekt} tendenziell eher auf die Zusammenfassung von Eigenschaften und Fähigkeiten und die eigenständige Existenz eingeht (es existiert selbst als Objekt, nicht nur als Bündel).
+	
+	\pause
+	\vspace{1em}
+	
+	Der Begriff des »Dinges« ist hiervon verschieden, da das »Ding« ein Speicherbereich ist. Es hat somit eigentlich keine member functions, diese Stecken in seinem Typen. Zudem bezeichnet in der expression \verb|int foo;| der Name \verb|foo| ein »Ding«, man würde dies in C++ aber weder eine Instanz noch ein Objekt nennen, da es keine Klasse \verb|int| gibt.
 \end{frame}
 
 \begin{frame}[fragile,b]{Die Instanz myPrObj}
@@ -187,23 +202,22 @@
 \end{frame}
 
 
-\subsection{Virtuelle Methoden}
+\section{Virtuelle Methoden}
 
 \begin{frame}[fragile]{Overriding}
-	\tiny
-	Eine Unzulänglichkeit der deutschen Sprache: Es gibt Überladen (overload) und Überschreiben (overwrite), aber mir fällt keine gute (eindeutige) Übersetzung für \emph{override} ein. In der deutschen Informatik verwendet man für override tatsächlich überschreiben, aber das klingt in meinen Ohren zu sehr nach Verdecken (name hiding).
-	
-	\normalsize
-	\vspace{0.5em}
-	
-	\begin{block}{Overriding (Standard, 10.3:2)}
-		In einer Klasse \verb|CParent| sei eine virtual member function \verb|apply| deklariert. Eine Klasse \verb|CChild| erbe direkt oder indirekt von \verb|CParent|. Wenn nun in \verb|CChild| eine Funktion mit \emph{demselben Namen und derselben Parameter-Liste} wie \verb|CParent::apply| deklariert ist, so ist \verb|CChild::apply| ebenfalls virtual (egal, ob sie so explizit deklariert wurde oder nicht) und sie \emph{overrides} \verb|CParent::apply|.
+	\begin{block}{Überschreiben (Standard, 10.3:2)}
+		In einer Klasse \verb|CParent| sei eine virtual member function \verb|apply| deklariert. Eine Klasse \verb|CChild| erbe direkt oder indirekt von \verb|CParent|. Wenn nun in \verb|CChild| eine Funktion mit \emph{demselben Namen und derselben Parameter-Liste} wie \verb|CParent::apply| deklariert ist, so ist \verb|CChild::apply| ebenfalls virtual (egal, ob sie so explizit deklariert wurde oder nicht) und sie \emph{überschreibt} \verb|CParent::apply|.
+		Der Einfachheit halber sagt man, dass Definition der virtual member function in der Elterklasse ebenfalls eine Überschreibung ist, wenn sie nicht als pure virtual member function angelegt wurde (\emph{pure}: später).
 	\end{block}
+	
+	\vspace{1em}
+	
+	Beachte: Überschreiben ist etwas Anderes als verdecken (name hiding)!
 \end{frame}
 
 \begin{frame}[fragile]{Das Aufrufen virtueller Funktionen (1)}
 	\begin{block}{calling a virtual function (Standard, 5.2.2:1)}
-		Wird eine virtual function aufgerufen, wird der dynamic type des »Dings« herangezogen. Es wird dann ausgehend vom dynamic type in der Vererbungshierarchie in Richtung der Elter-Klassen nach einem override der Funktion gesucht (und der erste Treffer verwendet).
+		Wird eine virtual function aufgerufen, wird der dynamic type des »Dings« herangezogen. Es wird dann ausgehend vom dynamic type in der Vererbungshierarchie in Richtung der Elter-Klassen nach einer Überschreibung der Funktion gesucht und der erste Treffer verwendet.
 	\end{block}
 	
 	\pause
@@ -225,15 +239,15 @@
 \end{frame}
 
 \begin{frame}[fragile,b]{Der virtuelle Destruktor}
-	Angenommen, ich habe nun \verb|pMyObj = new CChild;| geschrieben. Was macht dann \verb|delete pMyObj;|?
+	Angenommen, ich habe nun \verb|pMySubObj = new CChild;| geschrieben. Was macht dann \verb|delete pMySubObj;|?
 	
 	\pause
 	\vspace{1em}
 	
 	Antwort: Das kommt darauf an, ob der Destruktor von \verb|CParent| virtuell ist!
 	\begin{itemize}
-		\item Ist der Destruktor \emph{nicht} virtuell, so wird nur \verb|pMyObj->~CParent()| aufgerufen.
-		\item Ist der Destruktor virtuell, so wird zunächst \verb|pMyObj->~CChild()| und anschließend \verb|pMyObj->~CParent()| aufgerufen.
+		\item Ist der Destruktor \emph{nicht} virtuell, so wird nur \verb|pMySubObj->~CParent()| aufgerufen.
+		\item Ist der Destruktor virtuell, so wird zunächst \verb|pMySubObj->~CChild()| und anschließend \verb|pMySubObj->~CParent()| aufgerufen.
 	\end{itemize}
 	
 	\includegraphics[width=0.5\linewidth]{images/pMySubObj-dtor}
@@ -244,7 +258,7 @@
 	
 	\begin{itemize}
 		\item Der Destruktor (dtor) hat in jeder Klasse einen eigenen Namen (\verb|~Classname|).
-		\item Es werden \emph{alle} overridden Destruktoren (die der Basisklassen) aufgerufen, und zwar beginnend mit dem most-derived (final overrider), dann jeweils bei Ende des dtors einer Klasse der dtor der direkten Elterklasse dieser Klasse.
+		\item Es werden \emph{alle} überschriebenen Destruktoren (die der Basisklassen) aufgerufen, und zwar beginnend mit dem dtor im meist abgeleiteten Typ, dann jeweils bei Ende des dtors einer Klasse der dtor der direkten Elterklasse dieser Klasse.
 	\end{itemize}
 	
 	\pause
@@ -253,51 +267,57 @@
 	Zusätzlich zum dtor-Aufruf wird natürlich noch der Speicher freigegeben. Dabei spielt es keine Rolle, ob der dtor virtuell ist oder nicht.
 \end{frame}
 
-\begin{frame}[fragile,b]{pure virtual member functions}
+\begin{frame}[fragile]{pure virtual member functions}
 	Bei einer virtual member function kann die Implementierung komplett weggelassen werden, indem hinter die Funktions-Deklaration ein \verb|= 0;| geschrieben wird. Sie ist dann nur noch eine leere Hülle. Nanu?
 	
 	\pause
+	\vspace{1em}
 	
-	Die Idee dabei ist: Pointer auf die Basisklasse können die pure virtual member function aufrufen, die Implementierung (der Inhalt) dieser Funktion wird dann durch abgeleitete Klassen bereitgestellt.
+	Die Idee dabei ist: Mit einem \verb|BaseClass*|-Pointer kann man die pure virtual member function ansprechen. Was dann aufgerufen wird, ist eine Überschreibung in einer abgeleiteten Klasse.
+\end{frame}
+
+\begin{frame}[fragile,b]{pure virtual member functions: Beispiel}
+	Machen wir zum Beispiel die Funktion \verb|apply| zur pure virtual member function, also \verb|virtual void apply() = 0;|
 	
 	\vspace{1em}
 	\includegraphics[width=0.5\linewidth]{images/pMySubObj-pureVirtApply}
 \end{frame}
 
 
-\subsection{Abstrakte Klassen}
+\section{Abstrakte Klassen}
 
 \begin{frame}[fragile]{Abstrakte Klassen}
 	Es gibt einen Hauptunterschied zwischen:
 	\verb|virtual void apply() { }|
 	und
 	\verb|virtual void apply() = 0;|
-	Dieser ist, dass eine einzige pure virtual member function die Klasse zu einer sog. \emph{abstrakten Klasse} macht.
+	Die erste Variante hat eine \emph{leere} Implementierung (sie tut nichts), während die zweite Variante \emph{keine} Implementierung hat (sie kann nicht selbst aufgerufen werden, sondern nur eine Überschreibung).
+	Eine einzige solche pure virtual member function macht eine Klasse zu einer \emph{abstrakten Klasse}.
 	
 	\pause
 	
 	\begin{block}{Abstrakte Klassen (Standard, 10.4:1-2)}
-		Eine \emph{abstrakte Klasse} ist eine Klasse die nur als Basisklasse für andere Klassen verwendet werden kann; es können keine Instanzen einer abstrakten Klasse erzeugt werden (nur base class subobjects). Eine Klasse ist eine abstrakte Klasse wenn sie mindestens eine pure virtual member function hat. Beachte: Sie kann diese geerbt haben (wenn noch kein override in der Hierarchie existiert).
+		Eine \emph{abstrakte Klasse} ist eine Klasse, die nur als Basisklasse für andere Klassen verwendet werden kann; es können keine Instanzen einer abstrakten Klasse erzeugt werden (nur base class subobjects). Eine Klasse ist eine abstrakte Klasse wenn sie mindestens eine pure virtual member function hat. Beachte: Sie kann diese geerbt haben (wenn noch keine Überschreibung in einer Elterklasse existiert).
 	\end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Interface}
-	Ein abstrakte Klasse, die \emph{ausschließlich} deren member ausschließlich pure virtual member functions sind, kann nennt man auch Interface.
+	Ein abstrakte Klasse, deren member \emph{ausschließlich} pure virtual member functions sind, nennt man auch Interface.
 	
 	\pause
 	\vspace{1em}
 	
-	Interfaces werden für sehr viele Dinge verwendet und sind neben dem Arbeiten mit Objekten ein Hauptaspekt im objektorientierten Programmieren. Man definiert mittels Interfaces bspw. die gemeinsame \enquote{Sprache}, mit der zwei voneinander unabhängige Komponenten interagieren können. Die eine Seite nutzt dabei einen Pointer vom Typ \verb|MyInterface*| und die andere Seite \emph{implementiert} das Interface, d.h. hat von eine Klasse, die von \verb|MyInterface| erbt und die pure virtual member functions implementiert. Die letztere Seite erzeugt dann eine Instanz dieser abgeleiteten Klasse und gibt der ersten Seite einen Pointer.
+	Interfaces werden für sehr viele Dinge verwendet und sind neben dem Arbeiten mit Objekten (Instanzen) ein Hauptaspekt im objektorientierten Programmieren. Man definiert mittels Interfaces bspw. die gemeinsame \enquote{Sprache}, mit der zwei voneinander unabhängige Komponenten interagieren können. Die eine Seite nutzt dabei einen Pointer vom Typ \verb|MyInterface*| und die andere Seite \emph{implementiert} das Interface, d.h. hat von eine Klasse, die von \verb|MyInterface| abgeleitet ist und Überschreibungen aller pure virtual member functions enthält. Die letztere Seite erzeugt dann eine Instanz dieser abgeleiteten Klasse und gibt der ersten Seite einen \verb|MyInterface*|-Pointer.
 \end{frame}
 
 
-\subsection{dynamic\_cast}
+\section{dynamic\_cast}
 
 \begin{frame}[fragile]{Der Vollständigkeit halber: dynamic\_cast}
-	Man kann implizit von einem \verb|CChild*| einen \verb|CParent*| erhalten. Umgekehrt geht das nicht ohne weiteres, denn z.B. ein Pointer auf \verb|myPrObj| (es ist untot! xD) kann nicht sinnvollerweise in einen Pointer auf \verb|CChild*| verwandelt werden (z.B.: es fehlt die Information des data members \verb|rot|).
+	Man kann implizit von einem \verb|CChild*| einen \verb|CParent*| erhalten. Umgekehrt geht das nicht ohne weiteres, denn z.B. ein Pointer auf \verb|myPrObj| kann nicht sinnvollerweise in einen Pointer auf eine \verb|CChild|-Instanz verwandelt werden (z.B.: es fehlt die Information des data members \verb|rot|).
 	
 	\pause
 	\vspace{1em}
 	
-	Wenn man schreibt \verb|dynamic_cast < CChild* > ( pMySubObj )|, so ist das Resultat dieser expression abhängig vom \emph{dynamic type} von \verb|*pMySubObj| -- verweist \verb|pMySubObj| auf ein base class subobject einer Instanz von \verb|CChild|, so ist das Ergebnis ein gültiger Pointer auf diese Instanz (auf das »Ding«). Anderenfalls ist das Resultat \verb|0| (ein ungültiger Pointer).
+	Wenn man schreibt \verb|dynamic_cast < CChild* > ( pMySubObj )|, so ist das Resultat dieser expression abhängig vom \emph{dynamic type} von \verb|*pMySubObj|. Verweist \verb|pMySubObj| auf ein base class subobject einer Instanz von \verb|CChild| (z.B. \verb|pMySubObj|), so ist das Ergebnis ein gültiger Pointer auf diese Instanz (auf das »Ding«). Anderenfalls (z.B. \verb|&myPrObj|) ist das Resultat \verb|0|, ein ungültiger Pointer.
 \end{frame}
