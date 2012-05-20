@@ -14,7 +14,7 @@ namespace bmp {
     polyline::polyline(RelativeCoordinate * const coords, const unsigned int numCoords) :
             coords(coords),
             numCoords(numCoords) {
-        // assert coords != null
+        // assert (numCoords == 0) || (numCords > 0) && (coords != null))
     }
 
     polyline::~polyline() {
