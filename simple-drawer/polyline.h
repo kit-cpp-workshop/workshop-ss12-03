@@ -19,7 +19,7 @@ namespace bmp {
             virtual ~polyline();
 
             virtual bool applyTo(BatchBitmap24& p_target);
-        private:
+        protected:
             RelativeCoordinate * const coords;
             const unsigned int numCoords;
     };
