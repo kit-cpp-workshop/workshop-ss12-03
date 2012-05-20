@@ -21,7 +21,7 @@ namespace bmp {
         for (;;) {
             p_target.setPixel(x, y, p_color); // assert true
 
-            if (x == p_to.getX()) {
+            if ((x == p_to.getX()) && (y == p_to.getY())) {
                 break;
             }
 
