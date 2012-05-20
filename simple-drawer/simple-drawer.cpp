@@ -1,21 +1,18 @@
 #include "batchbmp.h"
 #include "line.h"
 #include "fill.h"
+#include "polygon.h"
 
 #include <iostream>
 
+static bmp::Color24 green = { 0, 255, 0 };
+static bmp::Color24 blue = { 0, 0, 255 };
+static bmp::Color24 black = { 0, 0, 0 };
+
+static void drawSchroedingersCat(bmp::BatchBitmap24 &bm);
+
 int main() {
     bmp::BatchBitmap24 blackBitmap(100, 100);
-
-    bmp::Color24 blue = { 0, 0, 255 };
-    bmp::Color24 black = { 0, 0, 0 };
-
-    /*
-    for (unsigned int iRow = 0; iRow < blackBitmap.getHeight(); ++iRow) {
-        for (unsigned int iColumn = 0; iColumn < blackBitmap.getWidth(); ++iColumn) {
-            blackBitmap.setPixel(iColumn, iRow, blue);
-        }
-    }*/
 
     blackBitmap.setCurrentColor(blue);
 
@@ -39,6 +36,22 @@ int main() {
 
     blackBitmap.save("foo.bmp");
 
+    blackBitmap.setCurrentColor(black);
+    bmp::fill().applyTo(blackBitmap);
+    blackBitmap.setCurrentColor(green);
+    drawSchroedingersCat(blackBitmap);
+    blackBitmap.save("schroedinger.bmp");
+
     return 0;
 }
 
+void drawSchroedingersCat(bmp::BatchBitmap24 &bm) {
+    bmp::RelativeCoordinate corners[4];
+
+    corners[0].set(0.25, 0.25);
+    corners[1].set(0.25, 0.75);
+    corners[2].set(0.75, 0.75);
+    corners[3].set(0.75, 0.25);
+
+    bmp::polygon(corners, 4).applyTo(bm); // schroedingers cat lives here
+}
