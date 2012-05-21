@@ -1,0 +1,208 @@
+\section{Translation units}
+
+\begin{frame}{Translation unit}
+	Der Compiler -- also das Programm, welches den Quellcode liest, versteht und aufbereitet -- arbeitet typischerweise auf einzelnen \emph{translation units}. Wie der Name schon sagt, werden die translation units jede für sich vom Compiler übersetzt.
+	
+	\pause
+	\vspace{1em}
+	
+	\begin{block}{Translation unit (Standard, 2:1)}
+		Der Programmtext (Quellcode) wird in sog. \emph{source files} gehalten (typisch: .cpp, .cc). Eine \emph{source file} zusammen mit allen Headern und eingebundenen \emph{source files}, abzüglich aller bedingten Exklusionen (später), wird \emph{translation unit} genannt.
+	\end{block}
+	
+	Eine translation unit wird bei den üblichen Compilern ausgehend einer einzelnen Quellcode-Datei (.cpp, .cc) gebildet.
+\end{frame}
+
+\begin{frame}[fragile]{C++ ohne Header}
+	Wenn man eine leere Quellcode-Datei angelegt hat, so hat man dort zunächst nur die grundlegenden Sprachelemente zur Verfügung:
+	
+	\begin{itemize}
+		\item built-in types: \verb|bool|, \verb|double|, \verb|char|, \verb|int| usw.
+		\item Schleifen, Verzweigungen usw.
+		\item Eigene Funktionen definieren und (weiter unten im Quelltext) aufrufen
+		\item Eigene Typen (z.B. Klassen) definieren und (weiter unten) verwenden
+		\item »Dinge« anlegen, \verb|new|, \verb|delete|
+	\end{itemize}
+	
+	\pause
+	
+	Die translation units sind voneinander unabhängig, also darf man nicht ohne weiteres auf Namen, Funktionen, Typen, »Dinge« usw. aus anderen translation units zugreifen.
+\end{frame}
+
+\begin{frame}[fragile]{Wann darf man was verwenden?}
+	Offensichtlich darf man z.B. keine Klasse verwenden, die nirgendwo definiert wurde.
+	
+	\begin{itemize}
+		\item Funktionen darf man verwenden, wenn sie weiter oben im Quelltext deklariert wurden (\verb|void foobar();|)
+		\item Klassen darf man instanziieren, wenn sie weiter oben definiert wurden (die member wurden alle genannt)
+	\end{itemize}
+	
+	\pause
+	\vspace{1em}
+	
+	Faustregel: Der Compiler muss die Form kennen, nicht aber den Inhalt. Bei Funktionen heißt dies, er muss die Signatur kennen (also Rückgabewert, Name und Parameter); bei Klasse heißt dies, er muss die Struktur der Klasse kennen (Basisklassen, member functions, data member, static members).
+\end{frame}
+
+\begin{frame}{Beispiel}
+	\scriptsize
+	\lstinputlisting[language=C++, tabsize=4]{cpp-code/decl-defn.cpp}
+\end{frame}
+
+\begin{frame}[fragile]{Die Befehle für Header}
+	Mit dem Befehl \verb|#include <HEADER_NAME>| in einer eigenen Zeile bindet man einen Header ein. ACHTUNG: Dieser Befehl ist gedacht für die C++ Standard-Bibliothek.
+	
+	\vspace{1em}
+	
+	Mit dem Befehl \verb|#include "HEADER_NAME"| in einer eigenen Zeile bindet man \emph{bei allen gängigen Compilern} eigene Header-Dateien (.h, .hpp) ein. Der Standard spricht an dieser Stelle von \emph{source files}.
+	
+	\pause
+	\vspace{1em}
+	
+	Die Befehle sind einfache copy\&paste-Anweisungen: Der Quelltext der Header wird an die Stelle des Kommandos eingefügt (und weitere \verb|#include|s abgearbeitet).
+\end{frame}
+
+\begin{frame}{Linker}
+	Innerhalb einer translation unit darf man bspw. eine Funktion auch dann nutzen, wenn in der translation unit \emph{überhaupt keine Definition}, sondern nur eine Deklaration der Funktion vorhanden ist.
+	
+	\vspace{1em}
+	
+	Der Linker bindet nach den Arbeiten des Compilers die translation units zusammen, dabei löst er die Verweise auf Funktionen auf. Wird eine Funktion in translation unit A nur deklariert, dieselbe Funktion in translation unit B auch definiert, so findet der Linker diese Definition und verwendet sie in A.
+\end{frame}
+
+\begin{frame}{Eigene Header}
+	Üblicherweise (Konvention) teilt man den Quellcode seines Programms auf in logisch zusammenhängende Teile, die nicht zu groß sind. Diese wandern in separate Quellcode-Dateien (.cpp usw.). Um die Verbindung zwischen diesen unabhängigen translation units herzustellen, verwendet man Header. Hierin steht nur \emph{das Minimum, welches zur Zusammenspiel der translation units erforderlich ist}.
+	
+	\pause
+	\vspace{1em}
+	
+	Im Falle von Funktionen ist das Minimum die Deklaration (Signatur), im Falle von Klassen ist es die Definition (Struktur).
+\end{frame}
+
+\begin{frame}[fragile]{Beispiel}
+	Das Beispiel vorhin könnte etwa in drei Dateien aufgetrennt werden:
+	\vspace{1em}
+	
+	\scriptsize
+	\begin{columns}[t]
+		\column{0.2\textwidth}
+		\emph{MyType.h}
+		\lstinputlisting[language=C++, linerange={1-1, 4-9}, commentstyle=\none, tabsize=4]{cpp-code/decl-defn.cpp}
+		
+		\column{0.3\textwidth}
+		\emph{MyType.cpp}\\
+		%too lazy to do this in a better way
+		\vspace{0.75em}
+		\verb|#include "MyType.h"|
+		\lstinputlisting[language=C++, linerange={19-20}, commentstyle=\none, tabsize=4]{cpp-code/decl-defn.cpp}
+		
+		\column{0.3\textwidth}
+		\emph{program.cpp}\\
+		\vspace{0.75em}
+		\verb|#include "MyType.h"|
+		\lstinputlisting[language=C++, linerange={11-13, 14-17}, commentstyle=\none, tabsize=4]{cpp-code/decl-defn.cpp}
+	\end{columns}
+	
+	\vspace{1em}
+	\normalsize
+	Es werden zwei translation units gebildet: Eine aus \emph{MyType.cpp} und eine aus \emph{program.cpp}. Beide translation units enthalten den Header \emph{MyType.h}, hierüber können in \emph{program.cpp} die Funktionen mit den Definitionen in \emph{MyType.h} verknüpft werden.
+\end{frame}
+
+\begin{frame}[fragile]{Die Header aus der Standard-Bibliothek}
+	Die Header aus der Standard-Bibliothek von C++ müssen nicht zwangsläufig Dateien sein, deren Text kopiert und eingefügt wird. Es gibt lediglich Garantien, dass gewisse Dinge zur Verfügung stehen, wenn man sie \enquote{einbindet}.
+	
+	\pause
+	\vspace{1em}
+	
+	Bindet man den Header \verb|<iostream>| ein, so steht u.a. \verb|std::cin| und \verb|std::cout| zur Verfügung.
+\end{frame}
+
+\begin{frame}{Häufige Fehler mit Headern}
+	\begin{itemize}
+		\item uneindeutige Datei-Namen (mehrere Dateien mit demselben Namen)
+		\item Datei wird nicht gefunden (falsche Einstellungen vom Compiler / Präprozessor)
+		\item es wurde vergessen, einen Header einzubinden
+		\item ein Header wurde mehrmals eingebunden (gleich mehr dazu)
+	\end{itemize}
+\end{frame}
+
+
+\section{Include-Guards}
+
+\begin{frame}{Include-Guards}
+	Wenn das Projekt wächst, wächst freilich auch die Zahl an Header-Dateien. Ein weiteres Problem: Innerhalb einer translation unit gilt die one-definition-rule (es darf immer nur eine Definition geben). Durch mehrfache Einbindung desselben Headers kommt es daher oft zu Problemen.
+	
+	\pause
+	\vspace{1em}
+	
+	Es gibt verschiedene Varianten, damit umzugehen. Am gängigsten ist Folgende:
+	\begin{itemize}
+		\item Jeder Header inkludiert diejenigen Headers, die er benötigt -- etwa die Typen der Parameter von Funktionsdeklarationen oder die Typen von data members von Klassen. Damit enthält eine translation unit immer alle Header, die benötigt werden.
+		\item In die Header werden sog. \emph{include guards} eingebaut, die verhindern, dass ein Header zweimal in derselben translation unit landet.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Wichtig: Abhängigkeiten}
+	Es kommt am Ende nur darauf an, dass alles in der translation unit gelandet ist -- ABER: bei komplexen Projekten ist es nicht leicht, selbst alle Abhängigkeiten zu finden, und es muss auch in der richtigen Reihenfolge in der translation unit gelandet sein: In einem Header \verb|A| sei eine Funktion deklariert, die einen Typen \verb|T| verwende. Dann muss der Header \verb|B|, in welchem \verb|T| definiert wurde, \emph{vor} der Funktionsdeklaration eingebunden werden.
+	
+	\pause
+	\vspace{1em}
+	
+	Daher ist es günstig, in den Headern selbst in den ersten Zeilen die nötigen \verb|#include|-Anweisungen stehen zu haben, die alle Header inkludieren, die dieser Header benötigt.
+\end{frame}
+
+\begin{frame}[fragile]{Beispiel}
+	\scriptsize
+	\begin{columns}[t]
+		\column{0.3\textwidth}
+		\emph{MyType.h}
+		\lstinputlisting[language=C++, linerange={1-5}, tabsize=4]{cpp-code/header-inclusion.h}
+		
+		\column{0.3\textwidth}
+		\emph{MyDepType.h}
+		\lstinputlisting[language=C++, linerange={8-17}, tabsize=4]{cpp-code/header-inclusion.h}
+	\end{columns}
+	
+	\vspace{1em}
+	{\footnotesize
+	Selbst wenn in der translation unit nur »Dinge« vom Typ \verb|MyDepType| und keine »Dinge« vom Typ \verb|MyType| direkt verwendet werden, muss dennoch der Header \emph{MyType.h} eingebunden sein, da sonst dem Compiler die Struktur der Klasse \verb|MyDepType| unbekannt ist. Auch muss diese Einbindung \emph{vor} der Definition von \verb|MyDepType| geschehen. Daher schreibt man die notwendige \verb|#include|-Anweisung gleich in den \emph{MyType.h}-Header.
+	}
+\end{frame}
+
+\begin{frame}[fragile]{Verwendung von Include-Guards}
+	include guards basieren auf der bedingten Einbindung. Diese wiederum wird durch den sogenannten Präprozessor durchgeführt (ein einfaches Programm, das sich vor dem Compiler den Quelltext anschaut). Grundlegend schreibt man in Headern:
+	
+	\vspace{0.5em}
+	\footnotesize
+	\lstinputlisting[language=C++, linerange={1-6}]{cpp-code/include-guard.h}
+	\vspace{0.5em}
+	
+	\normalsize
+	Der Text für \verb|EINDEUTIGER_NAME| sollte dabei eindeutig sein für alle Header, die in die translation unit eingebunden werden. \emph{Tipp von Christian Käser:} Dateinamen, Projektnamen und relativen Pfad verwursten. Es gelten dieselben Beschränkungen wie etwa für Variablennamen.
+\end{frame}
+
+\begin{frame}[fragile]{Funktionsweise von include guards (1)}
+	Der Präprozessor lebt in seiner eigenen Welt aus Suchen\&Ersetzen. Zusätzlich dazu kann er noch rudimentäre Variablen verwalten. Trifft ein Präprozessor auf eine if-then-else-Verzweigung, so fügt er das passende Textstück (entweder then oder else) in die translation unit ein:
+	
+	\footnotesize
+	\lstinputlisting[language=C++, linerange={9-15}]{cpp-code/include-guard.h}
+
+	\normalsize
+	Es geht hierbei wirklich um stupides Text-Einfügen: Entweder der Text zwischen der \verb|#if|-Zeile und der \verb|#else|-Zeile wird verwendet, oder der Text zwischen der \verb|#else|-Zeile und der \verb|#endif|-Zeile. Es kann der else-Teil auch weggelassen werden (nicht jedoch das \verb|#endif|).
+\end{frame}
+
+\begin{frame}[fragile]{Funktionsweise von include guards (2)}
+	\begin{itemize}
+		\item Der Präprozessor prüft, ob eine Variable \emph{nicht} existiert (\verb|#ifndef| = if not defined).
+		\item Falls ja (sie existiert nicht), legt er diese Variable an (\verb|#define HE...|) und bindet den eigentlichen Header-Text in die translation unit ein.
+		\item Schließlich wird die Verzweigung noch beendet (\verb|#endif|).
+	\end{itemize}
+	
+	\pause
+	
+	Der Präprozessor arbeitet begrenzt auf translation units:
+	\begin{itemize}
+		\item Beim ersten einbinden des Headers \emph{in diese translation unit} ist die Variable noch nicht definiert.
+		\item Der Präprozessor geht in den \emph{then}-Fall des if-then-else, definiert die Variable und bindet den Header ein.
+		\item Beim nächsten Einbinden dieses Headers \emph{in diese translation unit} wird nichts mehr eingebunden, da der else-Zweig leer ist.
+	\end{itemize}
+\end{frame}
