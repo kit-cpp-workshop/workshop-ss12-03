@@ -43,5 +43,6 @@ namespace bmp
 		// implement me!
 		virtual bool applyTo(Bitmap24&) = 0;
 	};*/
+}
 
 #endif

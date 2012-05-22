@@ -162,7 +162,7 @@ namespace bmp
 		static BitmapHeader const DEFAULT_HEADER = {{'B', 'M'}, 0, {0}, {0}, 0};
 
 		BITMAPINFOHEADER specificBitmapHeader = DEFAULT_BITMAPHEADER;
-		specificBitmapHeader.bmpDataSize = rowSize*height;
+		specificBitmapHeader.bmpDataSize = rowSize*width*height;
 		specificBitmapHeader.width = width;
 		specificBitmapHeader.height = height;
 
@@ -173,7 +173,7 @@ namespace bmp
 		out << specificHeader;
 		out << specificBitmapHeader;
 
-		out.write( reinterpret_cast<const char* const>(bitmap), rowSize*height );
+		out.write( reinterpret_cast<const char* const>(bitmap), rowSize*width*height );
 
 		out.flush();
 	}

@@ -72,5 +72,4 @@ namespace bmp
 	};
 }
 
-
 #endif
