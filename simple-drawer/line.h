@@ -43,4 +43,5 @@ namespace bmp
 		bmp::RelativeCoordinate to;
 	};
 }
+
 #endif

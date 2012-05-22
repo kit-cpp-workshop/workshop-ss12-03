@@ -1,3 +1,6 @@
+#ifndef COORDINATE_H
+#define COORDINATE_H
+
 #include <istream>
 
 // not required, since we only use pointers and refs in this header
@@ -79,3 +82,5 @@ namespace bmp
 	// magic for reading from command line / file, don't care
 	std::istream& operator >>(std::istream& p_o, bmp::RelativeCoordinate& p_c);
 }
+
+#endif
