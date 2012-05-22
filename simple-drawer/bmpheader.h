@@ -2,6 +2,24 @@
 #define H_BMPHEADER
 
 
+
+
+/** \file bmpheader.h
+ * internal header for Bitmap file header structures
+ *
+ * ACHTUNG TEILNEHMER!!!!
+ *
+ * Diese Datei ist nur ein interner Header, welcher vom Bitmap-Framework ver-
+ * wendet wird.
+ * Er wird in der Implementierung von Bitmap24 verwendet und muss daher vorhan-
+ * den sein. Nichts weiteres ist abhängig von diesem Header, sodass du ihn
+ * NICHT inkludieren musst.
+ *
+ * EINFACH NICHT WEITER BEACHTEN!
+ * (notwendig, aber für die Bearbeitung der Aufgaben irrelevant)
+ */
+
+
 #include <cstddef>
 
 #include "bmp-types.h"
@@ -57,6 +75,8 @@ namespace bmp
 		friend std::ostream& operator <<(std::ostream& p_os, BITMAPINFOHEADER const& p);
 	};
 }
+
+
 
 
 #endif	// H_BMPHEADER

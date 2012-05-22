@@ -4,6 +4,22 @@
 
 
 
+/** \file least-types.h
+ * internal header for least-size integer types
+ *
+ * ACHTUNG TEILNEHMER!!!!
+ *
+ * Diese Datei ist nur ein interner Header, welcher vom Bitmap-Framework ver-
+ * wendet wird.
+ * Er liefert die Datentypen für bmp-types.h .
+ * Du musst diesen Header NICHT selbst inkludieren, er wird über bmp-types.h
+ * schon an die Stellen eingebunden, wo er benötigt wird.
+ *
+ * EINFACH NICHT WEITER BEACHTEN!
+ * (notwendig, aber für die Bearbeitung der Aufgaben irrelevant)
+ */
+
+
 #include <climits>
 
 
