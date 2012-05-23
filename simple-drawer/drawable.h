@@ -9,11 +9,28 @@ namespace bmp
 {
 	// A class implementing the IBatchDrawable interface
 	// is drawable to a BatchBitmap24
+	/**
+	 * The common interface for drawer classes.
+	 *
+	 * Every class whose instances can draw something should be derived from
+	 * this interface and implement applyTo .
+	 */
 	class IBatchDrawable
 	{
 	public:
+		/**
+		 * Virtual dtor with empty implementation (for inheritance support)
+		 */
 		virtual ~IBatchDrawable() {}
 
+		/**
+		 * Applies a drawer instance to a bitmap canvas.
+		 *
+		 * You must override this method in a derived class and make the
+		 * instance draw to the passed BatchBitmap24 instance.
+		 *
+		 * @return false in case of error
+		 */
 		virtual bool applyTo(BatchBitmap24& p_target) = 0;
 	};
 
