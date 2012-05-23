@@ -24,6 +24,15 @@ Eine Aufzeichnung des Vortrags steht zum [Download](http://ubuntuone.com/2lthL8U
  - ab 15:34 Erläuterung des Bitmap24-Frameworks
  - ab 36:43 Vorstellung der Aufgaben
 
+### Addenda
+
+Nachdem das ganze nicht so toll gelaufen ist und auch keine Zeit mehr für eine ordentliche Dokumentation des Bitmap-Frameworks blieb, hier vier Nachträge zum Workshop:
+
+[Doxygen-Dokumentation des Bitmap-Frameworks](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/bitmap-framework-doc-html.zip)
+[Kurze Übersicht über das Bitmap-Framework](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/addendum-bmp.pdf)
+[Referenz zur Vererbung](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/addendum-inheritance.pdf)
+[Etwas mehr zu Headern](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/addendum-header.pdf)
+
 ## Aufgaben
 
 Sendet, nachdem ihr alle Aufgaben abgearbeitet habt, einen Pull-Request an das Workshop-Repository. Stellt sicher, dass ihr vorher alle eure Änderungen in euren Fork übertragen habt. Nennt euren Workshop-Betreuer im Text des Pull-Requests, einer der Betreuer (bevorzugt der genannte) wird dann eure Lösungen durchsehen, kommentieren und nach Abschluss des Reviews den Pull-Request als abgelehnt markieren.
