@@ -1,29 +1,33 @@
-#ifndef BMPHEADER_H
-#define BMPHEADER_H
+#ifndef H_BMPHEADER
+#define H_BMPHEADER
 
-#include <ostream>
-#include <cassert>
-#include <cstring>	// for memcpy
+
+
+
+/** \file bmpheader.h
+ * internal header for Bitmap file header structures
+ *
+ * ACHTUNG TEILNEHMER!!!!
+ *
+ * Diese Datei ist nur ein interner Header, welcher vom Bitmap-Framework ver-
+ * wendet wird.
+ * Er wird in der Implementierung von Bitmap24 verwendet und muss daher vorhan-
+ * den sein. Nichts weiteres ist abhängig von diesem Header, sodass du ihn
+ * NICHT inkludieren musst.
+ *
+ * EINFACH NICHT WEITER BEACHTEN!
+ * (notwendig, aber für die Bearbeitung der Aufgaben irrelevant)
+ */
+
+
 #include <cstddef>
 
-#include "least-types.h"
-using namespace least_types;
+#include "bmp-types.h"
 
 
-// source: http://en.wikipedia.org/wiki/BMP_file_format
 namespace bmp
 {
-	typedef char byte;
-	typedef least<  signed, 16>::type     int_least16_t;
-	typedef least<unsigned, 16>::type    uint_least16_t;
-	typedef least<  signed, 32>::type     int_least32_t;
-	typedef least<unsigned, 32>::type    uint_least32_t;
-
-
-	bool isBigEndian();
-
-	void convert2BigEndian(byte* dst, std::size_t dstCount,
-	                       byte const* src, std::size_t srcCount);
+	// source: http://en.wikipedia.org/wiki/BMP_file_format
 
 	struct BitmapHeader
 	{
@@ -72,4 +76,7 @@ namespace bmp
 	};
 }
 
-#endif
+
+
+
+#endif	// H_BMPHEADER

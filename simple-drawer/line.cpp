@@ -31,16 +31,26 @@ namespace bmp
 		/* does not require to do anything special in this implementation */
 	}
 
-	bool lineto::applyTo(bmp::BatchBitmap24& p)
+	bool lineto::applyTo(bmp::BatchBitmap24& p_target)
 	{
 		line lineObj;
-		AbsoluteCoordinate absTo = to.convert(p);
 
-		if( ! lineObj.draw(p, p.getCurrentPos(), absTo, p.getCurrentColor()) )
+		// we draw a line from the current "pen"'s position
+		AbsoluteCoordinate absFrom = p_target.getCurrentPos();
+
+		// we stored a RelativeCoordinate to stay independent from a concrete bitmap
+		// now, we do have a concrete bitmap
+		AbsoluteCoordinate absTo = to.convert(p_target);
+
+		// we draw the line using the current "pen"'s color
+		Color24 color = p_target.getCurrentColor();
+
+		// use the algorithm implemented more generally in the line class
+		if( ! lineObj.draw(p_target, absFrom, absTo, color) )
 		{
 			return false;
 		}
 
-		return p.setCurrentPos( absTo );
+		return p_target.setCurrentPos( absTo );
 	}
 }

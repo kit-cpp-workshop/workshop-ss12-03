@@ -1,4 +1,5 @@
 #include <cassert>
+#include <istream>
 
 #include "coordinate.h"
 #include "bmp.h"
@@ -95,11 +96,12 @@ namespace bmp
 	AbsoluteCoordinate RelativeCoordinate::convert(Bitmap24& p_ref)
 	{
 		AbsoluteCoordinate ret(p_ref);
-		ret.set
-		(
-			static_cast<unsigned int>( x * p_ref.getWidth() ),
-			static_cast<unsigned int>( y * p_ref.getHeight() )
-		);
+		
+		unsigned int setX = static_cast<unsigned int>( x * (p_ref.getWidth()  - 1) );
+		unsigned int setY = static_cast<unsigned int>( y * (p_ref.getHeight() - 1) );
+		
+		bool test = ret.set( setX, setY );
+		assert(test && "Koios hat Mist gebaut");
 
 		return ret;
 	}
