@@ -8,15 +8,15 @@
  * internal header for basic (integer) file types
  *
  * ACHTUNG TEILNEHMER!!!!
- *
+ * 
  * Diese Datei ist nur ein interner Header, welcher vom Bitmap-Framework ver-
  * wendet wird.
- * Er liefert Datentypen, die an verschiedenen Stellen intern benötigt werden.
+ * Er liefert Datentypen, die an verschiedenen Stellen intern benÃ¶tigt werden.
  * Du musst diesen Header NICHT selbst inkludieren, er wird schon an die
- * Stellen eingebunden, wo er benötigt wird.
+ * Stellen eingebunden, wo er benÃ¶tigt wird.
  *
  * EINFACH NICHT WEITER BEACHTEN!
- * (notwendig, aber für die Bearbeitung der Aufgaben irrelevant)
+ * (notwendig, aber fÃ¼r die Bearbeitung der Aufgaben irrelevant)
  */
 
 

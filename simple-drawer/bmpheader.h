@@ -12,11 +12,11 @@
  * Diese Datei ist nur ein interner Header, welcher vom Bitmap-Framework ver-
  * wendet wird.
  * Er wird in der Implementierung von Bitmap24 verwendet und muss daher vorhan-
- * den sein. Nichts weiteres ist abhängig von diesem Header, sodass du ihn
+ * den sein. Nichts weiteres ist abhÃ¤ngig von diesem Header, sodass du ihn
  * NICHT inkludieren musst.
  *
  * EINFACH NICHT WEITER BEACHTEN!
- * (notwendig, aber für die Bearbeitung der Aufgaben irrelevant)
+ * (notwendig, aber fÃ¼r die Bearbeitung der Aufgaben irrelevant)
  */
 
 
