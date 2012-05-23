@@ -36,6 +36,13 @@ namespace bmp
 	/**
 	 * This class provides a bitmap based canvas to draw onto. The bitmap
 	 * stores three color channels of each 8 bits.
+	 *
+     * The individual pixels can be accessed by getPixel() and  setPixel().
+     *
+     * The coordinate system is originated at the top left corner and the
+     * coordinate axes point to the lower respective right edge of the
+     * screen. The coordinate value range starts at (0, 0) and ends at
+     * (width - 1, height - 1).
 	 */
 	class Bitmap24
 	{
@@ -46,12 +53,6 @@ namespace bmp
 
 		/**
 		 * Creates a new RGB 24-bit bitmap instance with the passed dimensions.
-		 *
-		 * The individual pixels can be accessed by getPixel() and  setPixel().
-		 * The coordinate system is originated at the top left corner and the
-		 * coordinate axes point to the lower respective right edge of the
-		 * screen. The coordinate value range starts at (0, 0) and ends at
-		 * (p_width - 1, p_height - 1).
 		 *
 		 * @param p_width the width of the new bitmap, in pixels
 		 * @param p_height the height of the new bitmap, in pixels
@@ -77,8 +78,8 @@ namespace bmp
 
 		/**
 		 * Returns the color value of the pixel at coordinate (p_x, p_y) by
-		 * using the passed reference p_c . If the coordinate is out of range,
-		 * true is returned, else false
+		 * using the passed reference p_c . If the coordinates are out of range,
+		 * false is returned, else true.
 		 *
 		 * @param p_x the X coordinate component
 		 * @param p_y the Y coordinate component
@@ -89,8 +90,8 @@ namespace bmp
 		bool getPixel(unsigned int p_x, unsigned int p_y, /*out*/ Color24& p_c);
 		/**
          * Sets the color value of the pixel at coordinate (p_x, p_y) to the
-         * value passed by p_c. If the coordinate is out of range, true is
-         * returned, else false
+         * value passed by p_c. If the coordinates are out of range, false is
+         * returned, else true.
          *
          * @param p_x the X coordinate component
          * @param p_y the Y coordinate component
@@ -124,15 +125,35 @@ namespace bmp
 		 */
 		bool getIndex(unsigned int p_x, unsigned int p_y, unsigned int& p_index);
 
+		/**
+		 * @internal
+		 *
+		 * A pointer to the bitmap image data in 24-bit bitmap format. According
+		 * to the specification, each row is aligned/patted at/to a 4-byte
+		 * boundary. Because of this alignment, using Color24 or another class
+		 * (maybe called Pixel24) can not be used here.
+		 */
+		byte* bitmap;
 
-		// the bitmap itself, an array containing some sort of 2-dimensional map of pixels
-		// using a Pixel24* seems useful at first glance, but there might be alignment issues
-		byte* bitmap;	// NOTE: each row is aligned at a 4-byte boundary
+		/**
+		 * @internal
+		 *
+		 * Stores the effective size of a row (in bytes), including
+		 * alignment/padding bytes.
+		 */
+		unsigned int rowSize;
 
-		// the effective size of a row, including alignment
-		unsigned int rowSize;	// in [byte]
-
+		/**
+		 * @internal
+		 *
+		 * The width of the bitmap, in pixels.
+		 */
 		unsigned int width;
+		/**
+		 * @internal
+		 *
+		 * The height of the bitmap, in pixels.
+		 */
 		unsigned int height;
 	};
 }
