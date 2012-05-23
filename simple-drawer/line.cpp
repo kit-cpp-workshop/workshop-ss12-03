@@ -13,13 +13,13 @@ namespace bmp
 			return false;
 		}
 
-		unsigned int startx=p_from.getX();
+ 		unsigned int startx=p_from.getX();
 		unsigned int starty=p_from.getY();
 		unsigned int endx=p_to.getX();
 		unsigned int endy=p_to.getY();
 
 
-		std::cout << "From " << startx << ":" << starty << " to " << endx << ":" << endy <<std::endl;
+		//std::cout << "From " << startx << ":" << starty << " to " << endx << ":" << endy <<std::endl;
 
 
 		unsigned int currentx;
@@ -32,7 +32,7 @@ namespace bmp
 		double winkel;
 		if (endx!=startx)
 		{
-			winkel=atan((double(endy)-double(starty))/(double(endx)-double(startx)));
+			winkel=std::atan((double(endy)-double(starty))/(double(endx)-double(startx)));
 		}
 
 		else
@@ -41,8 +41,10 @@ namespace bmp
 		}
 
 
-
-		for (int i=0;i<=ceil(sqrt((endy-starty)*(endy-starty)+(endx-startx)*(endx-startx)));i++)
+		double dy=double(endy)-double(starty);
+		double dx=double(endx)-double(startx);
+		double dist=std::ceil(dx*dx+dy*dy);
+		for (int i=0;i<=dist;i++)
 		{
 			if (endx>=startx)
 			{
@@ -64,9 +66,6 @@ namespace bmp
 
 			p_target.setPixel(currentx, currenty, p_color);
 		}
-
-		// please IMPLEMENT here!!
-
 
 		return true;
 	}

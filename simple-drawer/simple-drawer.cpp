@@ -10,7 +10,7 @@
 
 int main()
 {
-	bmp::BatchBitmap24 blackBitmap(10, 10);
+	bmp::BatchBitmap24 blackBitmap(100, 100);
 
 	bmp::Color24 blue = {0, 0, 255};
 	bmp::Color24 red = {255,0,0};
@@ -25,14 +25,19 @@ int main()
 
 	// Linie zeichnen
 	bmp::AbsoluteCoordinate end(blackBitmap);
-	if(!end.set(9, 5))
+
+	bmp::AbsoluteCoordinate a(blackBitmap);
+	a.set(10,95);
+	blackBitmap.setCurrentPos(a);
+
+	if(!end.set(10, 5))
 	{
 		std::cout << "error!" << std::endl;
 	}else
 	{
 		blackBitmap.setCurrentColor(red);
 		bmp::lineto myLine( end.convert() );
-		//myLine.applyTo(blackBitmap);
+		myLine.applyTo(blackBitmap);
 	}
 
 	// Dreieck zeichnen
@@ -70,7 +75,7 @@ int main()
 		blackBitmap.setCurrentPos(a1);
 
 		bmp::rechteck myRechteck(p2,p3,p4);
-		myRechteck.applyTo(blackBitmap);
+		//myRechteck.applyTo(blackBitmap);
 	}
 
  	blackBitmap.save("foo.bmp");

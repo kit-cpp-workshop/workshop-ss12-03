@@ -13,24 +13,28 @@ namespace bmp
 		if (!l1.applyTo(p_target))
 		{
 			std::cout << "Error" << std::endl;
+			return false;
 		}
 
 		bmp::lineto l2(p3);
 		if (!l2.applyTo(p_target))
 		{
 			std::cout << "Error" << std::endl;
+			return false;
 		}
 
 		bmp::lineto l3(p4);
 		if (!l3.applyTo(p_target))
 		{
 			std::cout << "Error" << std::endl;
+			return false;
 		}
 
 		bmp::lineto l4(p1);
 		if (!l4.applyTo(p_target))
 		{
 			std::cout << "Error" << std::endl;
+			return false;
 		}
 
 		return true;
@@ -54,8 +58,8 @@ namespace bmp
 	bool rechteck::applyTo(bmp::BatchBitmap24& p)
 	{
 		drawrechteck rechteckObj;
-		rechteckObj.draw(p,(p.getCurrentPos()).convert(),p2,p3,p4,p.getCurrentColor());
+		bool ret=rechteckObj.draw(p,(p.getCurrentPos()).convert(),p2,p3,p4,p.getCurrentColor());
 
-		return true;
+		return ret;
 	}
 }

@@ -12,18 +12,21 @@ namespace bmp
 		if (!l1.applyTo(p_target))
 		{
 			std::cout << "Error" << std::endl;
+			return false;
 		}
 
 		bmp::lineto l2(p3);
 		if (!l2.applyTo(p_target))
 		{
 			std::cout << "Error" << std::endl;
+			return false;
 		}
 
 		bmp::lineto l3(p1);
 		if (!l3.applyTo(p_target))
 		{
 			std::cout << "Error" << std::endl;
+			return false;
 		}
 
 		return true;
@@ -46,8 +49,8 @@ namespace bmp
 	bool dreieck::applyTo(bmp::BatchBitmap24& p)
 	{
 		drawdreieck dreieckObj;
-		dreieckObj.draw(p,(p.getCurrentPos()).convert(),p2,p3,p.getCurrentColor());
+		bool ret=dreieckObj.draw(p,(p.getCurrentPos()).convert(),p2,p3,p.getCurrentColor());
 
-		return true;
+		return ret;
 	}
 }
