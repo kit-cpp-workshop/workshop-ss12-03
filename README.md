@@ -14,15 +14,9 @@ Roter Faden: Objektorientierung
 
 Die Vortragsfolien stehen als [PDF](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/slides.pdf) zum Download bereit. Außerdem liegt der LaTeX-Quellcode zu den Folien im Ordner `slides`.
 
-### Screencast
+###Screencast
 
-Eine Aufzeichnung des Vortrags steht zum [Download](http://ubuntuone.com/2lthL8UEWij5CbLh3vPqTx) bereit. Aufgrund technischer Schwierigkeiten lässt die Bildqualität leider dieses Mal etwas zu wünschen übrig.
-
- - ab 00:00 Namespaces
- - ab 03:30 Einführung in das Thema des Workshops
- - ab 04:50 Vererbung
- - ab 15:34 Erläuterung des Bitmap24-Frameworks
- - ab 36:43 Vorstellung der Aufgaben
+Ein Screencast des Vortrags wird nach dem Workshop an dieser Stelle verlinkt.
 
 ## Aufgaben
 

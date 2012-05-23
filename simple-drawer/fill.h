@@ -1,5 +1,5 @@
-#ifndef LINE_H
-#define LINE_H
+#ifndef FILL_H
+#define FILL_H
 
 #include "drawable.h"
 #include "batchbmp.h"
@@ -13,34 +13,28 @@ namespace bmp
 	// and would need a virtual dtor
 
 
-	// a class whose instances can draw a line to a Bitmap24
+	// a class whose instances can fill a Bitmap24 with the current color
 	// NOTE: there is a reason why this is a class (and not a simple function)
 	//       but it'll only reveal in some future workshop (or you use black voodoo already now)
-	class line
+	class fillcolor
 	{
 	public:
 		// returns false in case of error (one of the coordinates does not refer to the target)
-		bool draw(bmp::Bitmap24& p_target,
-		          AbsoluteCoordinate p_from, AbsoluteCoordinate p_to, Color24 p_color);
+		bool draw(bmp::Bitmap24& p_target, Color24 p_color);
 	};
 
 
-	// a class whose instances can draw lines to BatchBitmap24
-	// from the current position to another coordinate
-	// the current position of the bitmap is changed to the end position of the line
-	class lineto
+	// a class whose instances can fill to BatchBitmap24
+	class fillp
 		: public IBatchDrawable
 	{
 	public:
-		lineto(bmp::RelativeCoordinate p_to);
-		virtual ~lineto();
+		fillp();
+		virtual ~fillp();
 
 		virtual bool applyTo(bmp::BatchBitmap24& p);
 
-	private:
-		// NOTE: we use relative coordinates here to stay independent
-		//       from the bitmap which the lineto is later applied to
-		bmp::RelativeCoordinate to;
 	};
 }
+
 #endif
