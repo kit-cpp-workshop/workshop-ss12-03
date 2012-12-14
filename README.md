@@ -12,7 +12,7 @@ Roter Faden: Objektorientierung
 
 ### Folien zum Vortrag
 
-Die Vortragsfolien stehen als [PDF](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/slides.pdf) zum Download bereit. Außerdem liegt der LaTeX-Quellcode zu den Folien im Ordner `slides`.
+Die Vortragsfolien stehen als [PDF](kit-cpp-workshop.github.com/raw/downloads/workshops/ss12-03/slides.pdf) zum Download bereit. Außerdem liegt der LaTeX-Quellcode zu den Folien im Ordner `slides`.
 
 ### Screencast
 
@@ -28,10 +28,10 @@ Eine Aufzeichnung des Vortrags steht zum [Download](http://ubuntuone.com/2lthL8U
 
 Nachdem das ganze nicht so toll gelaufen ist und auch keine Zeit mehr für eine ordentliche Dokumentation des Bitmap-Frameworks blieb, hier vier Nachträge zum Workshop:
 
-* [Doxygen-Dokumentation des Bitmap-Frameworks](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/bitmap-framework-doc-html.zip) (öffne index.html)
-* [Kurze Übersicht über das Bitmap-Framework](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/addendum-bmp.pdf)
-* [Referenz zur Vererbung](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/addendum-inheritance.pdf)
-* [Etwas mehr zu Headern](https://github.com/downloads/kit-cpp-workshop/workshop-ss12-03/addendum-header.pdf)
+* [Doxygen-Dokumentation des Bitmap-Frameworks](kit-cpp-workshop.github.com/raw/downloads/workshops/ss12-03/bitmap-framework-doc-html.zip) (öffne index.html)
+* [Kurze Übersicht über das Bitmap-Framework](kit-cpp-workshop.github.com/raw/downloads/workshops/ss12-03/addendum-bmp.pdf)
+* [Referenz zur Vererbung](kit-cpp-workshop.github.com/raw/downloads/workshops/ss12-03/addendum-inheritance.pdf)
+* [Etwas mehr zu Headern](kit-cpp-workshop.github.com/raw/downloads/workshops/ss12-03/addendum-header.pdf)
 
 ## Aufgaben
 
