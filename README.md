@@ -16,7 +16,7 @@ Die Vortragsfolien stehen als [PDF](kit-cpp-workshop.github.com/raw/downloads/wo
 
 ### Screencast
 
-Eine Aufzeichnung des Vortrags steht zum [Download](http://ubuntuone.com/2lthL8UEWij5CbLh3vPqTx) bereit. Aufgrund technischer Schwierigkeiten lässt die Bildqualität leider dieses Mal etwas zu wünschen übrig.
+Eine Aufzeichnung des Vortrags steht zum [Download](https://drive.google.com/file/d/0B18AwdjM48imV0RLb0JLMkpWVnM/edit?usp=sharing) bereit. Aufgrund technischer Schwierigkeiten lässt die Bildqualität leider dieses Mal etwas zu wünschen übrig.
 
  - ab 00:00 Namespaces
  - ab 03:30 Einführung in das Thema des Workshops
